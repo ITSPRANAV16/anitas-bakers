@@ -621,22 +621,45 @@ async function initBot() {
     .lux-bot-container { position: fixed; bottom: 100px; right: 20px; z-index: 9999; font-family: var(--font-primary); }
     .lux-bot-fab { width: 60px; height: 60px; border-radius: 50%; background: linear-gradient(135deg, #d4af37, #b8962b); box-shadow: 0 10px 30px rgba(212,175,55,0.4); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); animation: pulseBot 2s infinite; }
     .lux-bot-fab:hover { transform: scale(1.1) rotate(5deg); }
-    .lux-bot-window { position: absolute; bottom: 80px; right: 0; width: 320px; height: 450px; background: rgba(14,12,10,0.95); backdrop-filter: blur(15px); border: 1px solid rgba(212,175,55,0.3); border-radius: 20px; display: none; flex-direction: column; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.5); transform-origin: bottom right; animation: animScaleIn 0.3s ease; }
+    .lux-bot-window { position: absolute; bottom: 80px; right: 0; width: 320px; height: 500px; background: rgba(14,12,10,0.98); backdrop-filter: blur(20px); border: 1px solid rgba(212,175,55,0.3); border-radius: 20px; display: none; flex-direction: column; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.8); transform-origin: bottom right; animation: animScaleIn 0.3s ease; }
     .lux-bot-window.active { display: flex; }
-    .lux-bot-header { background: linear-gradient(to right, #1a1614, #2a2420); padding: 20px; border-bottom: 1px solid rgba(212,175,55,0.2); display: flex; align-items: center; gap: 12px; }
+    .lux-bot-header { background: linear-gradient(to right, #1a1614, #2a2420); padding: 15px 20px; border-bottom: 1px solid rgba(212,175,55,0.2); display: flex; align-items: center; justify-content: space-between; }
+    .lux-bot-header .info { display: flex; align-items: center; gap: 12px; }
     .lux-bot-header .avatar { width: 35px; height: 35px; border-radius: 50%; background: #d4af37; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; }
-    .lux-bot-header .title { font-size: 1rem; color: #fff; font-weight: 600; }
-    .lux-bot-messages { flex: 1; overflow-y: auto; padding: 15px; display: flex; flex-direction: column; gap: 12px; scrollbar-width: thin; }
-    .message { max-width: 85%; padding: 10px 15px; border-radius: 15px; font-size: 0.9rem; line-height: 1.4; }
-    .msg-bot { background: rgba(255,255,255,0.05); color: #eee; align-self: flex-start; border-bottom-left-radius: 2px; }
-    .msg-user { background: #d4af37; color: #000; align-self: flex-end; border-bottom-right-radius: 2px; font-weight: 500; }
-    .lux-bot-input { padding: 15px; border-top: 1px solid rgba(255,255,255,0.05); display: flex; gap: 10px; background: #000; }
-    .lux-bot-input input { flex: 1; background: transparent; border: none; outline: none; color: #fff; font-size: 0.9rem; }
-    .lux-bot-input button { background: none; border: none; color: #d4af37; cursor: pointer; display: flex; align-items: center; justify-content: center; transform: rotate(45deg); }
-    @keyframes pulseBot { 0% { box-shadow: 0 0 0 0 rgba(212,175,55,0.7); } 70% { box-shadow: 0 0 0 15px rgba(212,175,55,0); } 100% { box-shadow: 0 0 0 0 rgba(212,175,55,0); } }
-    @keyframes animScaleIn { from { opacity: 0; transform: scale(0.5); } to { opacity: 1; transform: scale(1); } }
-    .suggested-btn { background: rgba(212,175,55,0.1); border: 1px solid rgba(212,175,55,0.3); color: #d4af37; padding: 6px 12px; border-radius: 20px; font-size: 0.8rem; cursor: pointer; transition: 0.2s; white-space: nowrap; }
-    .suggested-btn:hover { background: rgba(212,175,55,0.2); }
+    .lux-bot-header .title { font-size: 0.95rem; color: #fff; font-weight: 600; }
+    .lux-bot-messages { flex: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 15px; scrollbar-width: thin; }
+    .message { max-width: 85%; padding: 12px 16px; border-radius: 18px; font-size: 0.92rem; line-height: 1.5; animation: fadeInUp 0.3s ease; }
+    .msg-bot { background: rgba(255,255,255,0.07); color: #eee; align-self: flex-start; border-bottom-left-radius: 4px; }
+    .msg-user { background: linear-gradient(135deg, #d4af37, #b8962b); color: #000; align-self: flex-end; border-bottom-right-radius: 4px; font-weight: 600; box-shadow: 0 4px 15px rgba(212,175,55,0.2); }
+    
+    /* Product Card */
+    .bot-card { background: #1a1614; border: 1px solid rgba(212,175,55,0.3); border-radius: 12px; overflow: hidden; margin-top: 10px; width: 220px; }
+    .bot-card img { width: 100%; height: 120px; object-fit: cover; }
+    .bot-card-body { padding: 12px; }
+    .bot-card-title { color: #fff; font-weight: 600; font-size: 0.9rem; margin-bottom: 4px; }
+    .bot-card-price { color: var(--gold-main); font-weight: 700; font-size: 1rem; margin-bottom: 10px; }
+    .bot-card-btn { width: 100%; padding: 8px; background: var(--gold-main); color: #000; border: none; border-radius: 6px; font-weight: 700; font-size: 0.8rem; cursor: pointer; }
+
+    /* Typing Dots */
+    .typing { display: flex; gap: 4px; padding: 10px 15px; background: rgba(255,255,255,0.05); border-radius: 15px; align-self: flex-start; margin-bottom: 15px; }
+    .dot { width: 6px; height: 6px; background: #d4af37; border-radius: 50%; opacity: 0.4; animation: dotPulse 1.5s infinite; }
+    .dot:nth-child(2) { animation-delay: 0.2s; }
+    .dot:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes dotPulse { 0%, 100% { transform: translateY(0); opacity: 0.4; } 50% { transform: translateY(-4px); opacity: 1; } }
+
+    .lux-bot-input { padding: 15px; border-top: 1px solid rgba(255,255,255,0.05); display: flex; gap: 10px; background: #0b0908; align-items: center; }
+    .lux-bot-input input { flex: 1; background: transparent; border: none; outline: none; color: #fff; font-size: 0.95rem; }
+    .bot-ico-btn { background: none; border: none; color: #d4af37; cursor: pointer; display: flex; align-items: center; justify-content: center; opacity: 0.7; transition: 0.3s; }
+    .bot-ico-btn:hover { opacity: 1; transform: scale(1.1); }
+    .bot-ico-btn.listening { color: #ff6b6b; animation: pulseBot 1s infinite; }
+
+    @keyframes pulseBot { 0% { opacity: 0.7; } 50% { opacity: 1; transform: scale(1.2); } 100% { opacity: 0.7; } }
+    @keyframes animScaleIn { from { opacity: 0; transform: scale(0.8) translateY(20px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+    
+    .bot-chips { padding: 5px 15px 15px; display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; }
+    .bot-chips::-webkit-scrollbar { display: none; }
+    .suggested-btn { background: rgba(212,175,55,0.08); border: 1px solid rgba(212,175,55,0.2); color: #d4af37; padding: 8px 14px; border-radius: 20px; font-size: 0.75rem; cursor: pointer; transition: 0.2s; white-space: nowrap; font-weight: 500; }
+    .suggested-btn:hover { background: rgba(212,175,55,0.15); border-color: #d4af37; }
   `;
   document.head.appendChild(style);
 
@@ -646,22 +669,37 @@ async function initBot() {
   container.innerHTML = `
     <div class="lux-bot-window" id="botWin">
       <div class="lux-bot-header">
-        <div class="avatar">👩‍🍳</div>
-        <div class="title">Anita's Assistant</div>
+        <div class="info">
+          <div class="avatar">👩‍🍳</div>
+          <div>
+            <div class="title">Anita's Assistant</div>
+            <div style="font-size:0.6rem; color:#4ade80;">● Online</div>
+          </div>
+        </div>
+        <button class="bot-ico-btn" onclick="document.getElementById('botWin').classList.remove('active')" style="color:#aaa;">✕</button>
       </div>
       <div class="lux-bot-messages" id="botMsgs"></div>
-      <div style="padding: 5px 15px 10px; display:flex; gap:8px; overflow-x:auto;" id="botChips">
-        <button class="suggested-btn" onclick="sendMsg('Price List?')">📋 Prices</button>
-        <button class="suggested-btn" onclick="sendMsg('Where is the shop?')">📍 Address</button>
-        <button class="suggested-btn" onclick="sendMsg('How to order?')">🛍️ Order</button>
+      <div id="botTyping" style="display:none; padding-left:20px;">
+        <div class="typing"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+      </div>
+      <div class="bot-chips" id="botChips">
+        <button class="suggested-btn" onclick="sendMsg('🧁 Cakes')">🧁 Cakes</button>
+        <button class="suggested-btn" onclick="sendMsg('🍞 Breads')">🍞 Breads</button>
+        <button class="suggested-btn" onclick="sendMsg('🥨 Snacks')">🥨 Snacks</button>
+        <button class="suggested-btn" onclick="sendMsg('📍 Address')">📍 Address</button>
       </div>
       <div class="lux-bot-input">
-        <input type="text" id="botInp" placeholder="Ask me something..." autocomplete="off">
-        <button id="botSend"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg></button>
+        <button id="botMic" class="bot-ico-btn" title="Speak to me">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="23"></line><line x1="8" y1="23" x2="16" y2="23"></line></svg>
+        </button>
+        <input type="text" id="botInp" placeholder="Type or say something..." autocomplete="off">
+        <button id="botSend" class="bot-ico-btn" style="transform: rotate(45deg);">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+        </button>
       </div>
     </div>
     <div class="lux-bot-fab" id="botFab">
-      <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
     </div>
   `;
   document.body.appendChild(container);
@@ -671,13 +709,16 @@ async function initBot() {
   const inp = document.getElementById('botInp');
   const msgs = document.getElementById('botMsgs');
   const sendBtn = document.getElementById('botSend');
+  const micBtn = document.getElementById('botMic');
+  const typingDiv = document.getElementById('botTyping');
 
   fab.onclick = () => win.classList.toggle('active');
 
-  const addMsg = (text, sender) => {
+  const addMsg = (text, sender, isHtml = false) => {
     const m = document.createElement('div');
     m.className = `message msg-${sender}`;
-    m.textContent = text;
+    if(isHtml) m.innerHTML = text;
+    else m.textContent = text;
     msgs.appendChild(m);
     msgs.scrollTop = msgs.scrollHeight;
   };
@@ -685,64 +726,120 @@ async function initBot() {
   const getBotResponse = (txt) => {
     const q = txt.toLowerCase();
     
-    if(q.includes('price') || q.includes('bhav') || q.includes('menu')) {
-      let list = products.slice(0, 5).map(p => `${p.name}: ${p.price}`).join('\n');
-      return "आमची काही खास प्रॉडक्ट्स आणि त्यांचे दर:\n" + list + "\n\nपूर्ण मेनू तुम्ही Menu पेजवर बघू शकता! 😊";
-    }
-    
-    if(q.includes('where') || q.includes('address') || q.includes('location') || q.includes('dukan') || q.includes('shop')) {
-      return "आमचं दुकान नरसिंहपुर (Ishwarpur) मध्ये दत्त मंदिर जवळ आहे. नक्की भेट द्या! 📍";
-    }
-    
-    if(q.includes('order') || q.includes('कशी') || q.includes('cake pahije')) {
-      return "ऑर्डर करण्यासाठी तुम्ही होम पेजवर 'Order via WhatsApp' बटण दाबू शकता किंवा +91 9595997500 वर मेसेज करू शकता! 🛍️";
+    // Category checks
+    if(q.includes('cake')) {
+      const cakes = products.filter(p => p.cat === 'cakes').slice(0, 3);
+      let html = "आमचे काही लोकप्रिय केक बघा:<br>";
+      cakes.forEach(p => {
+        html += `
+          <div class="bot-card">
+            <img src="${p.img}" alt="${p.name}">
+            <div class="bot-card-body">
+              <div class="bot-card-title">${p.name}</div>
+              <div class="bot-card-price">${p.price}</div>
+              <button class="bot-card-btn" onclick="window.open(APP.whatsappLink('I want to order ${p.name}'), '_blank')">Order Now</button>
+            </div>
+          </div>
+        `;
+      });
+      return { text: html, isHtml: true };
     }
 
-    // Check specific product prices
+    if(q.includes('bread')) {
+      const p = products.find(p => p.cat === 'bread');
+      return { text: `आमच्याकडे ताजे आणि मऊ Bread मिळतात. ${p.name} ची किंमत ${p.price} पासून सुरू होते! 🍞`, isHtml: false };
+    }
+
+    if(q.includes('address') || q.includes('location') || q.includes('कुठे') || q.includes('shop')) {
+      return { text: "📍 आमचा पत्ता: दत्त मंदिर जवळ, नरसिंहपुर (Ishwarpur). नक्की भेट द्या! 😊", isHtml: false };
+    }
+
+    if(q.includes('order') || q.includes('कशी')) {
+      return { text: "ऑर्डर करण्यासाठी तुम्ही होम पेजवर 'Order via WhatsApp' बटण वापरू शकता किंवा या बोटमध्ये केक निवडून 'Order Now' दाबू शकता! 🛍️", isHtml: false };
+    }
+
+    // Direct product match
     for(let p of products) {
-      const pName = p.name.toLowerCase().replace(/[^a-z]/g, '');
-      const cleanQ = q.replace(/[^a-z]/g, '');
-      if(cleanQ.includes(pName)) {
-        return `${p.name} ची किंमत ${p.price} आहे. तुम्हाला आवडेल का ऑर्डर करायला? 🎂`;
+      if(q.includes(p.name.toLowerCase().replace(/[^a-z]/g, ''))) {
+        let html = `मी शोधलं! ${p.name} बद्दल ही माहिती आहे:<br>
+          <div class="bot-card">
+            <img src="${p.img}" alt="${p.name}">
+            <div class="bot-card-body">
+              <div class="bot-card-title">${p.name}</div>
+              <div class="bot-card-price">${p.price}</div>
+              <button class="bot-card-btn" onclick="window.open(APP.whatsappLink('I want to order ${p.name}'), '_blank')">Order Now</button>
+            </div>
+          </div>`;
+        return { text: html, isHtml: true };
       }
     }
 
-    if(q.includes('hi') || q.includes('hello') || q.includes('namaste')) {
-      return "नमस्ते! मी अनिता बेकर्सची असिस्टंट आहे. मी तुम्हाला काय मदत करू शकते? Menu, Shop Location किंवा Orders? 😊";
+    if(q.includes('hi') || q.includes('hello') || q.includes('नमस्ते')) {
+      return { text: "नमस्ते! मी अनिता बेकर्सची असिस्टंट आहे. तुम्हाला काय पाहायला आवडेल? केकचे दर की आमचा पत्ता? 😊", isHtml: false };
     }
 
-    return "मला माफ करा, मला समजलं नाही. तुम्ही WhatsApp (+91 9595997500) वर आम्हाला थेट विचारू शकता! 🙏";
+    return { text: "माफ करा, मला समजलं नाही. तुम्ही नक्की काय शोधत आहात? (उदा. Cakes, Prices, Location)", isHtml: false };
   };
 
-  const handleSend = () => {
-    const text = inp.value.trim();
-    if(!text) return;
-    addMsg(text, 'user');
+  const handleSend = async (text = null) => {
+    const val = text || inp.value.trim();
+    if(!val) return;
+    
+    addMsg(val, 'user');
     inp.value = '';
     
+    typingDiv.style.display = 'block';
+    msgs.scrollTop = msgs.scrollHeight;
+
     setTimeout(() => {
-      const resp = getBotResponse(text);
-      addMsg(resp, 'bot');
-    }, 600);
+      typingDiv.style.display = 'none';
+      const res = getBotResponse(val);
+      addMsg(res.text, 'bot', res.isHtml);
+    }, 1200);
   };
 
-  window.sendMsg = (t) => {
-    addMsg(t, 'user');
-    setTimeout(() => addMsg(getBotResponse(t), 'bot'), 600);
-  };
+  window.sendMsg = (t) => handleSend(t);
 
-  sendBtn.onclick = handleSend;
+  sendBtn.onclick = () => handleSend();
   inp.onkeypress = (e) => { if(e.key === 'Enter') handleSend(); };
 
+  // Voice Search (Microphone) logic
+  if ('webkitSpeechRecognition' in window) {
+    const recognition = new webkitSpeechRecognition();
+    recognition.lang = 'mr-IN'; // Set to Marathi
+    recognition.continuous = false;
+    
+    micBtn.onclick = () => {
+      recognition.start();
+      micBtn.classList.add('listening');
+      inp.placeholder = "Listening...";
+    };
+
+    recognition.onresult = (e) => {
+      const transcript = e.results[0][0].transcript;
+      inp.value = transcript;
+      micBtn.classList.remove('listening');
+      inp.placeholder = "Type or say something...";
+      handleSend();
+    };
+
+    recognition.onerror = () => {
+      micBtn.classList.remove('listening');
+      inp.placeholder = "Try again...";
+    };
+  } else {
+    micBtn.style.display = 'none';
+  }
+
   // Auto-welcome
-  if(!localStorage.getItem('bot_greeted')) {
+  if(!localStorage.getItem('bot_greeted_ultra')) {
     setTimeout(() => {
       if(!win.classList.contains('active')) {
         win.classList.add('active');
-        addMsg("नमस्ते! 🙏\nI'm Anita's Virtual Assistant. मी तुम्हाला केकचे दर, दुकान कुठे आहे किंवा ऑर्डर कशी करायची हे सांगू शकते!", 'bot');
-        localStorage.setItem('bot_greeted', 'true');
+        handleSend("नमस्ते! स्वागत आहे Anita's Bakers मध्ये! ❤️");
+        localStorage.setItem('bot_greeted_ultra', 'true');
       }
-    }, 4000);
+    }, 5000);
   }
 }
 
