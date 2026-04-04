@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="description" content="Anita's Bakers – Premium Pure-Vegetarian Bakery in Narsingpur. Fresh breads, eggless cakes & pastries.">
+  
+  <!-- Open Graph / SEO / WhatsApp Tags -->
+  <meta property="og:title" content="Anita's Bakers • Pure Vegetarian Bakery">
+  <meta property="og:description" content="Explore our exquisite eggless confections and artisanal breads, crafted daily with love in Narsingpur!">
+  <meta property="og:image" content="https://anitasbakers.netlify.app/logo/Anita's%20Bakers.png">
+  <meta property="og:url" content="https://anitasbakers.netlify.app/">
+  <meta property="og:type" content="website">
+
+  <!-- PWA Manifest -->
+  <link rel="manifest" href="../manifest.json">
+  <meta name="theme-color" content="#d4af37">
+
+  <title>Home • Anita's Bakers</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='0.9em' font-size='90'%3E%F0%9F%A5%90%3C/text%3E%3C/svg%3E">
+  <link rel="stylesheet" href="../style.css"/>
+  <style>
+    /* Hero Section */
+    .hero {
+      height: 100vh;
+      min-height: 800px;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 0 20px;
+      overflow: hidden;
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background: url('https://images.unsplash.com/photo-1542826438-bd32f43d626f?q=80&w=2000&auto=format&fit=crop') center/cover no-repeat;
+      z-index: 0;
+      transform: scale(1.05);
+      animation: slowZoom 20s ease-in-out infinite alternate;
+    }
+
+    @keyframes slowZoom {
+      0% { transform: scale(1.02); }
+      100% { transform: scale(1.1); }
+    }
+
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(11,9,8,0.7) 0%, rgba(11,9,8,0.4) 50%, var(--bg-deep) 100%);
+      z-index: 1;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 900px;
+      margin-top: 50px;
+    }
+
+    .hero-pretitle {
+      font-size: 1rem;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--gold-light);
+      margin-bottom: 20px;
+      display: block;
+      opacity: 0;
+      animation: fadeInUp 1s ease forwards 0.2s;
+    }
+
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: 5.5rem;
+      font-weight: 400;
+      line-height: 1.1;
+      margin-bottom: 24px;
+      color: var(--text-primary);
+      text-shadow: 0 10px 40px rgba(0,0,0,0.8);
+      opacity: 0;
+      animation: fadeInUp 1s ease forwards 0.4s;
+    }
+
+    .hero-subtitle {
+      font-size: 1.2rem;
+      color: var(--text-secondary);
+      max-width: 600px;
+      margin: 0 auto 40px;
+      line-height: 1.8;
+      opacity: 0;
+      animation: fadeInUp 1s ease forwards 0.6s;
+    }
+
+    .hero-btn-group {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      opacity: 0;
+      animation: fadeInUp 1s ease forwards 0.8s;
+    }
+
+    /* Product Cards overrides for Home */
+    .lux-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 30px;
+      max-width: 1300px;
+      margin: 0 auto;
+    }
+
+    .lux-card {
+      background: rgba(255,255,255,0.02);
+      border: 1px solid rgba(212,175,55,0.1);
+      border-radius: 12px;
+      padding: 20px;
+      transition: all 0.5s var(--ease-super-smooth);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .lux-card:hover {
+      background: rgba(212,175,55,0.05);
+      border-color: rgba(212,175,55,0.3);
+      transform: translateY(-10px);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+    }
+
+    .lux-card-img-wrap {
+      border-radius: 8px;
+      overflow: hidden;
+      margin-bottom: 20px;
+      position: relative;
+    }
+
+    .lux-card img {
+      width: 100%;
+      height: 300px;
+      object-fit: cover;
+      transition: transform 0.8s;
+      filter: brightness(0.9);
+    }
+
+    .lux-card:hover img {
+      transform: scale(1.05);
+      filter: brightness(1.1);
+    }
+
+    .lux-card h3 {
+      font-family: var(--font-display);
+      font-size: 1.8rem;
+      color: var(--gold-light);
+      margin-bottom: 8px;
+    }
+
+    .lux-card p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      margin-bottom: 20px;
+    }
+
+    .lux-card-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid rgba(255,255,255,0.05);
+      padding-top: 16px;
+    }
+
+    .lux-price {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      color: var(--text-primary);
+    }
+
+    .lux-btn-small {
+      color: var(--gold-main);
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-weight: 500;
+    }
+
+    .lux-card:hover .lux-btn-small {
+      color: var(--gold-light);
+    }
+
+    /* About Mini */
+    .lux-about {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .lux-about-img {
+      border-radius: 20px;
+      border: 1px solid rgba(212,175,55,0.2);
+      box-shadow: 0 30px 60px rgba(0,0,0,0.8);
+    }
+
+    .lux-about-text h2 {
+      font-family: var(--font-display);
+      font-size: 3.5rem;
+      color: var(--gold-main);
+      margin-bottom: 24px;
+      line-height: 1.1;
+    }
+
+    .lux-about-text p {
+      font-size: 1.1rem;
+      color: var(--text-secondary);
+      margin-bottom: 32px;
+      line-height: 1.8;
+    }
+
+    /* Reviews */
+    .review-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 30px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .review-card {
+      background: transparent;
+      border: 1px solid rgba(212,175,55,0.15);
+      padding: 40px 30px;
+      border-radius: 12px;
+      text-align: center;
+    }
+
+    .review-quote {
+      font-family: var(--font-display);
+      font-size: 1.2rem;
+      color: var(--text-primary);
+      font-style: italic;
+      margin-bottom: 24px;
+      line-height: 1.6;
+    }
+
+    .review-author {
+      font-size: 0.9rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--gold-dark);
+    }
+
+    @media (max-width: 1024px) {
+      .lux-about { grid-template-columns: 1fr; }
+      .review-grid { grid-template-columns: 1fr; }
+      .hero-title { font-size: 4rem; }
+    }
+    @media (max-width: 600px) {
+      .lux-about-text h2 { font-size: 2.5rem; }
+      .hero-title { font-size: 3.2rem; }
+    }
+    @media (max-width: 480px) {
+      .hero-title { font-size: 2.5rem; margin-top:20px;}
+      .hero-subtitle { font-size: 1rem; }
+      .hero-btn-group { flex-direction: column; gap: 15px; }
+      .section { padding: 60px 15px; }
+      .section-title { font-size: 2.5rem; }
+    }
+  </style>
+</head>
+<body>
+  <div id="header-slot"></div>
+
+  <!-- Hero -->
+  <section class="hero" id="home">
+    <div class="hero-bg"></div>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <span class="hero-pretitle">Est. 2024</span>
+      <h1 class="hero-title">The Art of Pure Vegetarian Baking</h1>
+      <p class="hero-subtitle">Exquisite eggless confections and artisanal breads, crafted daily with uncompromising quality and zero animal products.</p>
+      <div class="hero-btn-group">
+        <a href="menu.html" class="btn btn-bounce">Explore Menu</a>
+        <a href="login.html" class="btn btn-secondary">Order Custom Cake</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Products -->
+  <section class="section" id="menu" style="padding-top:120px;">
+    <div style="text-align:center; margin-bottom: 60px;">
+      <span class="section-subtitle">Our Masterpieces</span>
+      <h2 class="section-title">Signature Creations</h2>
+    </div>
+
+    <div class="lux-grid" id="products-container">
+      <!-- Injected via JS -->
+    </div>
+    
+    <div class="text-center mt-xl pt-lg">
+      <a href="menu.html" class="btn btn-secondary" style="padding: 16px 40px">View Complete Collection</a>
+    </div>
+  </section>
+
+  <!-- About -->
+  <section class="section" style="background: var(--bg-surface); padding: 120px 20px;">
+    <div class="lux-about">
+      <div class="lux-about-img-wrap">
+        <img class="lux-about-img" src="https://images.unsplash.com/photo-1558961363-fa8fdf82db35?q=80&w=1000&auto=format&fit=crop" alt="Bakery Kitchen">
+      </div>
+      <div class="lux-about-text">
+        <h2>Uncompromising Purity & Taste</h2>
+        <p>At Anita's Bakers, we've redefined what vegetarian baking can be. No eggs, no compromises. Just premium ingredients, masterful technique, and an absolute dedication to creating the most decadent treats you've ever tasted.</p>
+        <p>From our cloud-soft artisanal breads to our intricately designed chocolate truffles, every creation is a testament to our craft.</p>
+        <a href="about.html" class="text-gold" style="font-weight: 600; letter-spacing: 1px; text-transform:uppercase; display:inline-flex; align-items:center; gap:8px;">
+          Discover Our Story <span style="font-size:1.2rem;">→</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Reviews -->
+  <section class="section" style="padding: 120px 20px;">
+    <div style="text-align:center; margin-bottom: 60px;">
+      <span class="section-subtitle">Testimonials</span>
+      <h2 class="section-title">Words from our Patrons</h2>
+    </div>
+
+    <div class="review-grid" id="reviews-container">
+      <!-- Injected via JS -->
+    </div>
+  </section>
+
+  <div id="footer-slot"></div>
+
+  <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore-compat.js"></script>
+  <script src="../app.js"></script>
+  <script>
+    onReady(() => {
+      initShared('home');
+
+      // Add scrolling effect for header
+      window.addEventListener('scroll', () => {
+        const header = document.querySelector('.site-header');
+        if (window.scrollY > 50) {
+          header.classList.add('scrolled');
+        } else {
+          header.classList.remove('scrolled');
+        }
+      });
+
+      // Render products in luxury style
+      const container = document.getElementById('products-container');
+      const premiumItems = APP.PRODUCTS.filter(p => ['Mava Cake', 'Black Forest', 'Red Velvet', 'Blueberry Cake', 'Khari', 'Bread'].includes(p.name)).slice(0, 6);
+      
+      container.innerHTML = premiumItems.map((p, i) => `
+        <article class="lux-card" style="animation: fadeInUp 0.8s ease forwards ${i * 0.15}s; opacity:0;">
+          <div class="lux-card-img-wrap">
+            <img src="${p.img}" alt="${p.name}" loading="lazy">
+          </div>
+          <h3>${p.name}</h3>
+          <p>${getProductDesc(p.id)}</p>
+          <div class="lux-card-footer">
+            <span class="lux-price">${p.price}</span>
+            <span class="lux-btn-small">Order Now →</span>
+          </div>
+        </article>
+      `).join('');
+
+      renderReviews();
+    });
+
+    function getProductDesc(id) {
+      const descs = {
+        bread: 'Organic flour, slow fermentation, cloud-soft centre.',
+        khari: 'Hand-rolled, 100-layer flaky pastry. Traditional perfection.',
+        mava: 'Rich, dense, infused with cardamom and pure milk solids.',
+        blackforest: 'Dark Belgian chocolate, vanilla bean cream, fresh cherries.',
+        redvelvet: 'Velvety crimson sponge with mascarpone-style frosting.',
+        blueberry: 'Madagascar vanilla sponge bursting with European blueberries.',
+      };
+      return descs[id] || 'Pure, eggless, premium confection.';
+    }
+
+    function renderReviews() {
+      const container = document.getElementById('reviews-container');
+      const defaults = [
+        { name: 'Priya S.', text: 'The eggless chocolate cake is an absolute masterpiece. Unbelievably rich and entirely guilt-free.', rating: 5 },
+        { name: 'Dr. Rajesh M.', text: 'Finally, a bakery that understands luxury without compromising on strict vegetarian principles.', rating: 5 },
+        { name: 'Kavita K.', text: 'The Red Velvet is the centerpiece of every family celebration we have. Flawless presentation.', rating: 5 },
+      ];
+      
+      container.innerHTML = defaults.map((r, i) => `
+        <div class="review-card" style="animation: fadeInUp 0.8s ease forwards ${i * 0.2}s; opacity:0;">
+          <div style="color:var(--gold-main); font-size:1.5rem; margin-bottom:15px;">${'★'.repeat(r.rating)}</div>
+          <p class="review-quote">"${r.text}"</p>
+          <div class="review-author">— ${r.name}</div>
+        </div>
+      `).join('');
+    }
+  </script>
+</body>
+</html>

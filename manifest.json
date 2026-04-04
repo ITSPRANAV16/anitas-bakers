@@ -1,0 +1,21 @@
+{
+  "name": "Anita's Bakers",
+  "short_name": "Anita's Bakers",
+  "description": "100% Pure Vegetarian Bakery located in Narsingpur. Fresh Breads & Eggless Cakes.",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "background_color": "#14100E",
+  "theme_color": "#D4AF37",
+  "icons": [
+    {
+      "src": "/logo/Anita's Bakers.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/logo/Anita's Bakers.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

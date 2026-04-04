@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>My Portal • Anita's Bakers</title>
+  <link rel="stylesheet" href="../style.css"/>
+  <style>
+    .portal-container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 40px 20px 100px;
+    }
+    
+    .portal-header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    .portal-header h1 {
+      font-family: var(--font-display);
+      font-size: 2.5rem;
+      color: var(--gold-main);
+      margin-bottom: 10px;
+    }
+    .portal-header p {
+      color: var(--text-secondary);
+      font-size: 1.1rem;
+    }
+
+    /* Portal Grid */
+    .p-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 30px;
+    }
+
+    .p-card {
+      background: rgba(20,16,14,0.8);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(212,175,55,0.15);
+      border-radius: var(--radius-xl);
+      padding: 30px;
+      transition: transform 0.3s;
+    }
+    .p-card:hover { border-color: rgba(212,175,55,0.4); transform: translateY(-5px); }
+    
+    .p-card h3 {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      color: var(--gold-light);
+      margin-bottom: 20px;
+      display: flex; align-items: center; gap: 10px;
+    }
+
+    /* Custom Order Form */
+    .lux-input {
+      width: 100%;
+      background: rgba(0,0,0,0.3);
+      border: 1px solid rgba(255,255,255,0.1);
+      color: var(--gold-main);
+      padding: 15px;
+      border-radius: 12px;
+      font-size: 1rem;
+      margin-bottom: 15px;
+      transition: all 0.3s;
+    }
+    .lux-input:focus { border-color: var(--gold-main); outline: none; box-shadow: 0 0 15px rgba(212,175,55,0.1); }
+    
+    .review-stars { font-size: 2rem; color: var(--text-muted); cursor: pointer; text-align: center; margin-bottom: 15px;}
+    .review-stars span:hover, .review-stars span.active { color: var(--gold-main); }
+
+    .offer-box {
+      background: rgba(212,175,55,0.05);
+      border-left: 3px solid var(--gold-main);
+      padding: 15px;
+      margin-bottom: 15px;
+      border-radius: 8px;
+    }
+    .ob-title { color: var(--gold-main); font-weight: 600; margin-bottom: 5px; }
+    .ob-desc { font-size: 0.9rem; color: var(--text-secondary); }
+
+    @media (max-width: 768px) {
+      .p-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div id="header-slot"></div>
+
+  <div class="portal-container">
+    <div class="portal-header">
+      <h1>Welcome, <span id="u-name">Guest</span></h1>
+      <p>Your exclusive access to custom orders and luxury offers.</p>
+    </div>
+
+    <div class="p-grid">
+      <!-- Order Custom Cake -->
+      <div class="p-card">
+        <h3><span>🎂</span> Design Custom Cake</h3>
+        <select class="lux-input" id="c-flavor">
+          <option value="">Select Flavor...</option>
+          <option value="Chocolate Truffle">Chocolate Truffle</option>
+          <option value="Red Velvet">Red Velvet</option>
+          <option value="Black Forest">Black Forest</option>
+          <option value="Pure Mava">Pure Mava</option>
+        </select>
+        <select class="lux-input" id="c-weight">
+          <option value="">Weight...</option>
+          <option value="0.5 Kg">0.5 Kg</option>
+          <option value="1 Kg">1 Kg</option>
+          <option value="2 Kg+">2 Kg+</option>
+        </select>
+        <input type="text" class="lux-input" id="c-msg" placeholder="Message on Cake (e.g. Happy Birthday)">
+        <button class="btn" style="width:100%" onclick="reqCake()">Request via WhatsApp</button>
+      </div>
+
+      <!-- Quick Actions -->
+      <div class="p-card">
+        <h3><span>🎉</span> Exclusive Offers</h3>
+        <div id="offer-list"></div>
+        <hr style="border-color: rgba(255,255,255,0.05); margin: 20px 0;">
+        <a href="menu.html" class="btn" style="display:block; width:100%; margin-bottom:15px; text-align:center;">Browse Menu</a>
+        <button class="btn-secondary" style="width:100%; padding:15px; border-radius:30px; text-align:center;" onclick="APP.userLogout()">Log Out</button>
+      </div>
+
+      <!-- Review -->
+      <div class="p-card" style="grid-column: 1 / -1; text-align:center; max-width: 600px; margin: 0 auto; width:100%;">
+        <h3><span>⭐</span> Rate Your Experience</h3>
+        <div class="review-stars" id="stars">
+          <span data-val="1">★</span><span data-val="2">★</span><span data-val="3">★</span><span data-val="4">★</span><span data-val="5">★</span>
+        </div>
+        <textarea class="lux-input" id="r-text" placeholder="Tell us what you loved..." rows="3"></textarea>
+        <button class="btn" onclick="submitReview()">Submit Review</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="footer-slot"></div>
+
+  <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore-compat.js"></script>
+  <script src="../app.js"></script>
+  <script>
+    let u = APP.getUserInfo();
+    if(!u) window.location.href = 'login.html';
+
+    let rVal = 5;
+
+    onReady(() => {
+      initShared('user-dashboard');
+      document.getElementById('u-name').textContent = u.name;
+
+      // Offers
+      const offs = APP.getOffers();
+      document.getElementById('offer-list').innerHTML = offs.map(o => `
+        <div class="offer-box">
+          <div class="ob-title">${o.title}</div>
+          <div class="ob-desc">${o.desc}</div>
+        </div>
+      `).join('');
+
+      // Stars
+      const stars = document.querySelectorAll('#stars span');
+      stars.forEach(s => {
+        s.addEventListener('click', () => {
+          rVal = s.dataset.val;
+          stars.forEach(st => st.classList.remove('active'));
+          for(let i=0; i<rVal; i++) stars[i].classList.add('active');
+        });
+      });
+      for(let i=0; i<5; i++) stars[i].classList.add('active'); // default 5
+    });
+
+    function reqCake() {
+      const f = document.getElementById('c-flavor').value;
+      const w = document.getElementById('c-weight').value;
+      const m = document.getElementById('c-msg').value;
+      if(!f || !w) return APP.toast('Details Select Kara', 'error');
+      
+      APP.orderViaWhatsApp('Custom Cake', `Flavor: ${f}\nWeight: ${w}\nMessage: ${m}\nFrom: ${u.name}`);
+    }
+
+    function submitReview() {
+      const txt = document.getElementById('r-text').value.trim();
+      if(!txt) return APP.toast('Please write something', 'error');
+      APP.addReview(u.name, txt, rVal);
+      document.getElementById('r-text').value = '';
+      APP.toast('Thank you for the review!');
+    }
+  </script>
+</body>
+</html>

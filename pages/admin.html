@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Dashboard • Anita's Bakers</title>
+  <link rel="stylesheet" href="../style.css"/>
+  <style>
+    .admin-container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+      padding-bottom: 100px;
+    }
+
+    .admin-welcome {
+      background: linear-gradient(135deg, rgba(212,175,55,0.15), rgba(0,0,0,0.5));
+      border: 1px solid rgba(212,175,55,0.2);
+      border-radius: var(--radius-xl);
+      padding: 30px 20px;
+      text-align: center;
+      margin-bottom: 30px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    }
+
+    .admin-welcome h1 {
+      font-family: var(--font-display);
+      font-size: 2rem;
+      color: var(--gold-main);
+      margin-bottom: 8px;
+    }
+
+    /* Big Buttons */
+    .action-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+      margin-bottom: 30px;
+    }
+
+    .dash-btn {
+      background: var(--bg-surface);
+      border: 1px solid rgba(255,255,255,0.05);
+      border-radius: var(--radius-lg);
+      padding: 25px 15px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.4s var(--ease-super-smooth);
+    }
+
+    .dash-btn:hover, .dash-btn.active {
+      background: rgba(212,175,55,0.08);
+      border-color: rgba(212,175,55,0.4);
+      transform: translateY(-5px);
+      box-shadow: 0 15px 30px rgba(0,0,0,0.4), inset 0 0 20px rgba(212,175,55,0.05);
+    }
+
+    .dash-btn .icon {
+      font-size: 2.5rem;
+      display: block;
+      margin-bottom: 10px;
+      filter: drop-shadow(0 5px 10px rgba(0,0,0,0.5));
+    }
+
+    .dash-btn .label {
+      font-weight: 600;
+      color: var(--text-primary);
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .dash-btn.active .label {
+      color: var(--gold-main);
+    }
+
+    /* Panel */
+    .panel {
+      display: none;
+      background: rgba(20,16,14,0.8);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.05);
+      border-radius: var(--radius-xl);
+      padding: 30px 20px;
+      margin-bottom: 20px;
+      animation: fadeInUp 0.4s ease;
+    }
+    .panel.show { display: block; }
+
+    .panel-title {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      color: var(--gold-light);
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    /* Sales Prod Buttons */
+    .prod-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    .prod-sm {
+      background: rgba(255,255,255,0.02);
+      border: 1px solid rgba(255,255,255,0.1);
+      padding: 12px 5px;
+      border-radius: 12px;
+      text-align: center;
+      cursor: pointer;
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+      transition: all 0.3s;
+    }
+    .prod-sm.selected {
+      background: var(--gold-gradient);
+      color: var(--bg-deep);
+      border-color: transparent;
+      font-weight: 600;
+      box-shadow: 0 5px 15px rgba(212,175,55,0.2);
+    }
+
+    /* Bill & Inputs */
+    .lux-input {
+      background: rgba(0,0,0,0.3);
+      border: 1px solid rgba(255,255,255,0.1);
+      color: var(--gold-main);
+      padding: 15px;
+      border-radius: 12px;
+      font-size: 1.2rem;
+      font-weight: 600;
+      text-align: center;
+      width: 100%;
+      outline: none;
+      transition: all 0.3s;
+    }
+    .lux-input:focus {
+      border-color: var(--gold-main);
+      box-shadow: 0 0 15px rgba(212,175,55,0.1);
+    }
+    
+    .row-flex { display: flex; gap: 10px; align-items: center; margin-bottom: 20px; }
+    
+    .list-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 15px 0;
+      border-bottom: 1px dashed rgba(255,255,255,0.1);
+      align-items: center;
+    }
+    .list-row:last-child { border: none; }
+    .lr-main { color: var(--text-primary); font-weight: 500; }
+    .lr-sub { color: var(--text-muted); font-size: 0.8rem; }
+    .lr-amt { color: var(--gold-main); font-weight: 600; font-size: 1.1rem; }
+
+    .del-btn { background: none; border: none; color: #E53935; font-size: 1.2rem; cursor: pointer; padding: 5px; }
+
+    .total-bar {
+      display: flex; justify-content: space-between;
+      border-top: 2px solid rgba(212,175,55,0.3);
+      padding-top: 15px; margin-top: 10px;
+      font-family: var(--font-display); font-size: 1.5rem; color: var(--gold-light);
+    }
+
+    .bill-preview {
+      background: #080605;
+      padding: 20px;
+      border-radius: 12px;
+      border: 1px solid rgba(212,175,55,0.2);
+      font-family: monospace;
+      color: var(--gold-main);
+      white-space: pre-wrap;
+      margin-top: 20px;
+      font-size: 0.85rem;
+    }
+
+    /* Orders */
+    .ord-card {
+      background: rgba(255,255,255,0.02);
+      border-left: 3px solid var(--gold-main);
+      padding: 15px; border-radius: 8px; margin-bottom: 15px;
+    }
+    .ord-card.done { opacity: 0.5; border-color: var(--veg-green); }
+    .ord-actions { display: flex; gap: 10px; margin-top: 10px; flex-wrap:wrap;}
+    .ord-btn { background: rgba(255,255,255,0.05); color: var(--text-primary); padding: 5px 12px; border-radius: 20px; font-size: 0.75rem; cursor: pointer; border: 1px solid rgba(255,255,255,0.1); }
+
+    @media (max-width: 600px) {
+      .action-grid { gap: 10px; }
+      .dash-btn { padding: 15px 10px; }
+      .dash-btn .icon { font-size: 2rem; }
+      .dash-btn .label { font-size: 0.8rem; }
+      .row-flex { flex-direction: column; align-items: stretch; gap: 15px;}
+      .prod-grid { grid-template-columns: repeat(2, 1fr); }
+      .panel { padding: 20px 15px; }
+      .admin-welcome h1 { font-size: 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+  <div id="header-slot"></div>
+
+  <div class="admin-container">
+    <div class="admin-welcome">
+      <h1>Anita's Executive Panel</h1>
+      <p id="today-label" style="color:var(--text-secondary);"></p>
+    </div>
+
+    <div class="action-grid">
+      <div class="dash-btn" onclick="toggle('sales')" id="btn-sales">
+        <span class="icon">💰</span><span class="label">Daily Sales</span>
+        <div style="font-size: 0.75rem; color: var(--gold-light); margin-top: 8px; font-weight: bold;" id="dash-sales-summary">...</div>
+      </div>
+      <div class="dash-btn" onclick="toggle('bill')" id="btn-bill">
+        <span class="icon">🧾</span><span class="label">Quick Bill</span>
+      </div>
+      <div class="dash-btn" onclick="toggle('orders')" id="btn-orders">
+        <span class="icon">📋</span><span class="label">Order Book</span>
+      </div>
+      <div class="dash-btn" onclick="toggle('inventory')" id="btn-inventory">
+        <span class="icon">📦</span><span class="label">Inventory</span>
+      </div>
+      <div class="dash-btn" onclick="toggle('share')" id="btn-share">
+        <span class="icon">📣</span><span class="label">Marketing</span>
+      </div>
+    </div>
+
+    <!-- SALES -->
+    <div class="panel" id="panel-sales">
+      <h2 class="panel-title">Add Sale Entry</h2>
+      <div class="prod-grid" id="prod-btns"></div>
+      <div class="row-flex">
+        <input type="number" class="lux-input" id="sale-qty" placeholder="Qty" value="1" style="flex:1;">
+        <input type="number" class="lux-input" id="sale-amt" placeholder="₹ Amount" style="flex:2;">
+      </div>
+      <button class="btn" style="width:100%" onclick="addSale()">Record Sale</button>
+      <div style="margin-top:30px;" id="sales-list"></div>
+    </div>
+
+    <!-- BILL -->
+    <div class="panel" id="panel-bill">
+      <h2 class="panel-title">Generate Invoice</h2>
+      <div id="bill-rows"></div>
+      <button class="btn-secondary" style="width:100%; border-radius:12px; padding:10px; margin:15px 0;" onclick="addBillRow()">+ Add Item</button>
+      <div class="row-flex">
+        <button class="btn" onclick="makeBill()" style="flex:1; padding:12px;">Create</button>
+        <button class="btn" onclick="shareBill()" style="flex:1; padding:12px; background:linear-gradient(135deg, #128C7E, #25D366); color:white;">WhatsApp</button>
+      </div>
+      <div id="bill-out" style="display:none;"><div class="bill-preview" id="bill-text"></div></div>
+    </div>
+
+    <!-- ORDERS -->
+    <div class="panel" id="panel-orders">
+      <h2 class="panel-title">Custom Orders</h2>
+      <div style="display:grid; gap:10px; margin-bottom:20px;">
+        <input type="text" class="lux-input" id="ord-name" placeholder="Client Name" style="text-align:left; font-size:1rem;">
+        <input type="tel" class="lux-input" id="ord-phone" placeholder="Phone" style="text-align:left; font-size:1rem;">
+        <input type="text" class="lux-input" id="ord-item" placeholder="Order Details" style="text-align:left; font-size:1rem;">
+      </div>
+      <button class="btn" style="width:100%" onclick="saveOrder()">Save Order</button>
+      <div id="orders-list" style="margin-top:30px;"></div>
+    </div>
+
+    <!-- INVENTORY -->
+    <div class="panel" id="panel-inventory">
+      <h2 class="panel-title">Manage Products</h2>
+      
+      <div style="background: rgba(255,255,255,0.02); padding: 20px; border-radius: 12px; margin-bottom: 30px; border: 1px solid rgba(212,175,55,0.3);">
+        <h3 style="color:var(--gold-main); font-size:1.1rem; margin-bottom:15px;">Add New Product</h3>
+        <div style="display:grid; gap:10px; margin-bottom:15px;">
+          <input type="text" class="lux-input" id="new-prod-name" placeholder="Name (e.g. 🍪 Cookie)" style="text-align:left; font-size:1rem;">
+          <div class="row-flex" style="margin-bottom:0;">
+            <input type="text" class="lux-input" id="new-prod-price" placeholder="Price (e.g. ₹50)" style="text-align:left; font-size:1rem; flex:1;">
+            <select class="lux-input" id="new-prod-cat" style="text-align:left; font-size:1rem; flex:1; padding:0 10px;">
+              <option value="bread">Bread</option>
+              <option value="snacks">Snacks</option>
+              <option value="cakes">Cakes</option>
+            </select>
+          </div>
+        </div>
+        <button class="btn" style="width:100%" onclick="createProduct()">+ Add to Catalog</button>
+      </div>
+
+      <div id="inventory-list"></div>
+    </div>
+
+    <!-- SHARE -->
+    <div class="panel" id="panel-share">
+      <h2 class="panel-title">Marketing Tools</h2>
+      <div style="display:grid; gap:15px;">
+        <button class="btn" onclick="APP.shareMenuViaWhatsApp()">📋 Share Full Menu</button>
+        <button class="btn" onclick="shareCakes()">🎂 Share Cake List</button>
+        <button class="btn" onclick="shareOffers()">🎉 Share Offers</button>
+      </div>
+    </div>
+
+    <div style="text-align:center; margin-top:40px;">
+      <button class="btn-secondary" onclick="APP.adminLogout()" style="padding:10px 30px; border-radius:30px;">Secure Logout</button>
+    </div>
+  </div>
+
+  <div id="footer-slot"></div>
+
+  <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-auth-compat.js"></script>
+  <script src="../app.js"></script>
+  <script>
+    if (!APP.isAdminLoggedIn()) window.location.href = 'login.html';
+
+    let ITEMS = [];
+    let selectedItem = null;
+
+    async function refreshItems() {
+      const prods = await APP.getProducts();
+      ITEMS = prods.map(p => {
+        const emMatch = p.name.match(/^([\uD800-\uDBFF][\uDC00-\uDFFF])\s*(.*)/);
+        let emo = '📦', n = p.name;
+        if(emMatch) { emo = emMatch[1]; n = emMatch[2]; }
+        
+        const prMatch = String(p.price).match(/\d+/);
+        const parsedPr = prMatch ? parseInt(prMatch[0]) : 0;
+
+        return { id: p.id, name: n, emoji: emo, price: parsedPr, rawName: p.name, cat: p.cat, img: p.img };
+      });
+    }
+
+    onReady(async () => {
+      initShared('admin');
+      document.getElementById('today-label').textContent = APP.formatDate(APP.today());
+
+      await refreshItems();
+      renderProdBtns();
+      renderBillSelects();
+
+      addBillRow();
+      await loadSales();
+      await loadOrders();
+      loadInventory();
+    });
+
+    function renderProdBtns() {
+      document.getElementById('prod-btns').innerHTML = ITEMS.map((it, i) => 
+        `<div class="prod-sm" onclick="selItem(${i})" id="pb-${i}">${it.emoji} ${it.name}</div>`
+      ).join('');
+    }
+
+    function toggle(name) {
+      document.querySelectorAll('.panel').forEach(p => p.classList.remove('show'));
+      document.querySelectorAll('.dash-btn').forEach(b => b.classList.remove('active'));
+      const p = document.getElementById('panel-' + name);
+      if(p) {
+        p.classList.add('show');
+        document.getElementById('btn-' + name).classList.add('active');
+        p.scrollIntoView({behavior: 'smooth', block: 'start'});
+      }
+    }
+
+    // SALES
+    function selItem(idx) {
+      selectedItem = ITEMS[idx];
+      document.querySelectorAll('.prod-sm').forEach(b => b.classList.remove('selected'));
+      document.getElementById('pb-'+idx).classList.add('selected');
+      document.getElementById('sale-amt').value = selectedItem.price;
+    }
+
+    async function addSale() {
+      if(!selectedItem) return APP.toast('Select item!', 'error');
+      const qty = Number(document.getElementById('sale-qty').value);
+      const amt = Number(document.getElementById('sale-amt').value);
+      if(qty<=0 || amt<=0) return APP.toast('Invalid qty/amt', 'error');
+      
+      await APP.addSale(selectedItem.name, qty, amt);
+      document.getElementById('sale-qty').value = '1';
+      document.getElementById('sale-amt').value = '';
+      selectedItem = null;
+      document.querySelectorAll('.prod-sm').forEach(b => b.classList.remove('selected'));
+      await loadSales();
+      APP.toast('Sale Recorded!');
+    }
+
+    async function loadSales() {
+      const sales = await APP.getSales(APP.today());
+      const total = sales.reduce((s, x) => s + x.amount, 0);
+      const totalQty = sales.reduce((s, x) => s + x.qty, 0);
+      
+      const sumEl = document.getElementById('dash-sales-summary');
+      if(sumEl) sumEl.textContent = `Qty: ${totalQty} | ₹${total}`;
+
+      const list = document.getElementById('sales-list');
+      
+      if(sales.length === 0) return list.innerHTML = '<div style="text-align:center;color:var(--text-muted);">No sales yet today.</div>';
+
+      list.innerHTML = sales.map(s => `
+        <div class="list-row">
+          <div><div class="lr-main">${s.item}</div><div class="lr-sub">Qty: ${s.qty}</div></div>
+          <div style="display:flex; gap:15px; align-items:center;">
+            <div class="lr-amt">₹${s.amount}</div>
+            <button class="del-btn" onclick="delSale('${s.dbId}')">✕</button>
+          </div>
+        </div>
+      `).join('') + `<div class="total-bar"><span>TOTAL</span><span>₹${total}</span></div>`;
+    }
+
+    async function delSale(id) { await APP.deleteSale(id); await loadSales(); }
+
+    // BILL
+    function addBillRow() {
+      const row = document.createElement('div');
+      row.className = 'row-flex';
+      row.innerHTML = `
+        <select class="lux-input" style="flex:2; font-size:1rem; text-align:left; padding:10px;" onchange="billSel(this)">
+          <option value="">Item...</option>
+          ${ITEMS.map(it => `<option value="${it.rawName}" data-price="${it.price}">${it.rawName}</option>`).join('')}
+        </select>
+        <input type="number" class="lux-input bill-q" placeholder="Qty" value="1" style="flex:1; padding:10px;">
+        <input type="number" class="lux-input bill-p" placeholder="₹" style="flex:1; padding:10px;">
+        <button class="del-btn" onclick="this.parentElement.remove()">✕</button>
+      `;
+      document.getElementById('bill-rows').appendChild(row);
+    }
+
+    function billSel(sel) {
+      const p = sel.selectedOptions[0]?.dataset.price;
+      if(p) sel.parentElement.querySelector('.bill-p').value = p;
+    }
+
+    function getBill() {
+      const res = [];
+      document.querySelectorAll('#bill-rows .row-flex').forEach(r => {
+        const n = r.querySelector('select').value;
+        const q = Number(r.querySelector('.bill-q').value)||0;
+        const p = Number(r.querySelector('.bill-p').value)||0;
+        if(n && q>0 && p>0) res.push({name:n, qty:q, price:p, total:q*p});
+      });
+      return res;
+    }
+
+    function makeBill() {
+      const items = getBill();
+      if(!items.length) return APP.toast('Add items', 'error');
+      const {bill} = APP.generateBill(items);
+      document.getElementById('bill-text').textContent = bill;
+      document.getElementById('bill-out').style.display = 'block';
+    }
+
+    function shareBill() {
+      const items = getBill();
+      if(!items.length) return APP.toast('Add items', 'error');
+      const {bill} = APP.generateBill(items);
+      window.open(APP.whatsappLink(bill), '_blank');
+    }
+
+    // ORDERS
+    async function saveOrder() {
+      const name = document.getElementById('ord-name').value.trim();
+      const phone = document.getElementById('ord-phone').value.trim();
+      const item = document.getElementById('ord-item').value.trim();
+      if(!name || !item) return APP.toast('Name & Item required', 'error');
+      
+      await APP.addOrder({name, phone, item, date: APP.today()});
+      document.getElementById('ord-name').value = '';
+      document.getElementById('ord-phone').value = '';
+      document.getElementById('ord-item').value = '';
+      await loadOrders();
+      APP.toast('Order Saved');
+    }
+
+    async function loadOrders() {
+      const all = await APP.getOrders();
+      const ords = all.filter(o=>o.status==='pending');
+      const list = document.getElementById('orders-list');
+      if(!ords.length) return list.innerHTML='<div style="text-align:center;color:var(--text-muted);">No pending orders.</div>';
+      
+      list.innerHTML = ords.map(o => `
+        <div class="ord-card">
+          <div class="lr-main">${o.name} <span class="lr-sub">(${o.phone||'N/A'})</span></div>
+          <div style="color:var(--gold-light); margin:5px 0;">${o.item}</div>
+          <div class="ord-actions">
+            <button class="ord-btn" onclick="doneOrd(${o.id})" style="color:#81C784;border-color:#81C784;">Done</button>
+            <button class="ord-btn" onclick="waOrd('${o.phone}', '${o.name}')">WhatsApp</button>
+            <button class="ord-btn" onclick="delOrd(${o.id})" style="color:#E53935;border-color:#E53935;">Cancel</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function doneOrd(id) { APP.updateOrderStatus(id, 'done'); loadOrders(); }
+    function delOrd(id) { APP.deleteOrder(id); loadOrders(); }
+    function waOrd(phone, name) {
+      if(!phone) return APP.toast('No phone number', 'error');
+      window.open(APP.whatsappLink(`Hello ${name}, your order from Anita's Bakers is ready! 🎂`), '_blank');
+    }
+
+    // INVENTORY
+    function loadInventory() {
+      const list = document.getElementById('inventory-list');
+      if(!ITEMS.length) return list.innerHTML = '<div style="color:var(--text-muted);text-align:center;">No products found.</div>';
+      
+      list.innerHTML = ITEMS.map(it => `
+        <div class="list-row" style="background:rgba(20,16,14,0.5); padding:15px; border-radius:8px; margin-bottom:10px;">
+          <div><div class="lr-main">${it.rawName} <span style="font-size:0.7rem; color:var(--text-muted);">(${it.cat})</span></div></div>
+          <div style="display:flex; gap:15px; align-items:center;">
+            <div class="lr-amt">₹${it.price}</div>
+            <button class="del-btn" onclick="removeProduct('${it.id}')">✕</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function createProduct() {
+      const n = document.getElementById('new-prod-name').value.trim();
+      const p = document.getElementById('new-prod-price').value.trim();
+      const c = document.getElementById('new-prod-cat').value;
+      if(!n || !p) return APP.toast('Name & Price req', 'error');
+      
+      APP.addProduct(n, p, c);
+      APP.toast('Product Added globally!');
+      document.getElementById('new-prod-name').value='';
+      document.getElementById('new-prod-price').value='';
+      
+      refreshItems();
+      renderProdBtns();
+      renderBillSelects();
+      loadInventory();
+    }
+
+    function removeProduct(id) {
+      if(!confirm("Delete this product everywhere?")) return;
+      APP.deleteProduct(id);
+      refreshItems();
+      renderProdBtns();
+      renderBillSelects();
+      loadInventory();
+    }
+
+    function renderBillSelects() {
+      const selects = document.querySelectorAll('#bill-rows select');
+      selects.forEach(sel => {
+        const val = sel.value;
+        sel.innerHTML = '<option value="">Item...</option>' + ITEMS.map(it => `<option value="${it.rawName}" data-price="${it.price}">${it.rawName}</option>`).join('');
+        sel.value = val;
+      });
+    }
+
+    function shareCakes() {
+      let msg = `🎂 *Anita's Premium Cakes*\n\n`;
+      ITEMS.filter(i=>i.name.includes('Cake')||i.name==='Pastry').forEach(c => msg += `${c.name} — ₹${c.price}\n`);
+      window.open(APP.whatsappLink(msg), '_blank');
+    }
+
+    function shareOffers() {
+      window.open(APP.whatsappLink(`🎉 *Exclusive Offer - Anita's Bakers*\n\nPre-book your custom cakes and get 10% OFF! 100% Pure Veg.`), '_blank');
+    }
+  </script>
+</body>
+</html>

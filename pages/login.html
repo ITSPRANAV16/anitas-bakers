@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login • Anita's Bakers</title>
+  <link rel="stylesheet" href="../style.css"/>
+  <style>
+    .login-container {
+      max-width: 450px;
+      margin: 80px auto;
+      padding: 40px;
+      background: var(--bg-surface);
+      border: 1px solid rgba(212,175,55,0.15);
+      border-radius: var(--radius-xl);
+      box-shadow: 0 30px 60px rgba(0,0,0,0.8), 0 0 40px rgba(212,175,55,0.05);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .login-container::before {
+      content: '';
+      position: absolute;
+      top: -50px; left: -50px;
+      width: 150px; height: 150px;
+      background: radial-gradient(circle, rgba(212,175,55,0.1) 0%, transparent 70%);
+      border-radius: 50%;
+    }
+
+    .login-logo {
+      font-family: var(--font-script);
+      font-size: 3rem;
+      color: var(--gold-main);
+      margin-bottom: 5px;
+      text-shadow: 0 5px 15px rgba(212,175,55,0.2);
+    }
+    .login-sub { color: var(--text-secondary); margin-bottom: 40px; font-size: 0.9rem; letter-spacing: 2px; text-transform: uppercase; }
+
+    /* Tabs */
+    .auth-tabs {
+      display: flex;
+      background: rgba(0,0,0,0.5);
+      border-radius: var(--radius-full);
+      padding: 5px;
+      margin-bottom: 30px;
+      border: 1px solid rgba(255,255,255,0.05);
+    }
+    .auth-tab {
+      flex: 1;
+      padding: 12px;
+      border-radius: var(--radius-full);
+      cursor: pointer;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      transition: all 0.3s;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .auth-tab.active {
+      background: var(--gold-gradient);
+      color: var(--bg-deep);
+      box-shadow: 0 5px 15px rgba(212,175,55,0.2);
+    }
+
+    /* Forms */
+    .auth-form { display: none; animation: fadeInUp 0.4s ease; }
+    .auth-form.active { display: block; }
+    
+    .form-group { text-align: left; margin-bottom: 25px; }
+
+    .err-msg { color: var(--danger); font-size: 0.8rem; margin-top: 15px; display: none; }
+    
+    .skip-link {
+      display: inline-block;
+      margin-top: 25px;
+      color: var(--gold-dark);
+      font-size: 0.85rem;
+      border-bottom: 1px dashed var(--gold-dark);
+    }
+    .skip-link:hover { color: var(--gold-light); border-color: var(--gold-light); }
+
+    @media (max-width: 480px) {
+      .login-container { padding: 30px 20px; margin: 40px 15px; }
+      .login-logo { font-size: 2.5rem; }
+    }
+  </style>
+</head>
+<body>
+  <div id="header-slot"></div>
+
+  <div class="login-container">
+    <div class="login-logo">Anita's Bakers</div>
+    <div class="login-sub">Luxury Portal</div>
+
+    <div class="auth-tabs">
+      <div class="auth-tab active" onclick="switchTab('user')" id="tab-user">Customer</div>
+      <div class="auth-tab" onclick="switchTab('admin')" id="tab-admin">Executive</div>
+    </div>
+
+    <!-- User Form -->
+    <div id="form-user" class="auth-form active">
+      <div class="form-group">
+        <label class="form-label">Full Name</label>
+        <input type="text" id="cust-name" class="form-input" placeholder="e.g. Rahul Sharma" autocomplete="name">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Phone Number</label>
+        <input type="tel" id="cust-phone" class="form-input" placeholder="e.g. 9876543210" autocomplete="tel">
+      </div>
+      <button class="btn" style="width:100%" onclick="loginUser()">Enter Portal</button>
+      <div id="u-err" class="err-msg">Please enter valid details.</div>
+    </div>
+
+    <!-- Admin Form -->
+    <div id="form-admin" class="auth-form">
+      <div class="form-group">
+        <label class="form-label">Admin Email</label>
+        <input type="email" id="admin-email" class="form-input" placeholder="admin@anitas.com">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Secure Passcode</label>
+        <input type="password" id="admin-pass" class="form-input" placeholder="••••••••">
+      </div>
+      <button class="btn" style="width:100%" id="btn-login-admin" onclick="loginAdmin()">Authorize</button>
+      <div id="a-err" class="err-msg">Unauthorized access. Check credentials.</div>
+    </div>
+
+    <a href="home.html" class="skip-link">Continue as Guest</a>
+  </div>
+
+  <div id="footer-slot"></div>
+
+  <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-auth-compat.js"></script>
+  <script src="../app.js"></script>
+  <script>
+    onReady(() => {
+      initShared('login');
+      if(APP.isAdminLoggedIn()) window.location.href = 'admin.html';
+      if(APP.getUserInfo()) window.location.href = 'user-dashboard.html';
+
+      document.getElementById('admin-pass').addEventListener('keypress', e => {
+        if(e.key === 'Enter') loginAdmin();
+      });
+      document.getElementById('cust-phone').addEventListener('keypress', e => {
+        if(e.key === 'Enter') loginUser();
+      });
+    });
+
+    function switchTab(t) {
+      document.querySelectorAll('.auth-tab').forEach(x => x.classList.remove('active'));
+      document.querySelectorAll('.auth-form').forEach(x => x.classList.remove('active'));
+      document.getElementById('tab-'+t).classList.add('active');
+      document.getElementById('form-'+t).classList.add('active');
+    }
+
+    function loginUser() {
+      const n = document.getElementById('cust-name').value.trim();
+      const p = document.getElementById('cust-phone').value.trim();
+      if(!n || p.length < 10) {
+        document.getElementById('u-err').style.display = 'block';
+        return;
+      }
+      APP.userLogin(n, p);
+      window.location.href = 'user-dashboard.html';
+    }
+
+    async function loginAdmin() {
+      const e = document.getElementById('admin-email').value.trim();
+      const p = document.getElementById('admin-pass').value;
+      const btn = document.getElementById('btn-login-admin');
+      if(!e || !p) { document.getElementById('a-err').style.display = 'block'; return; }
+      
+      btn.textContent = 'Verifying...';
+      const success = await APP.adminLogin(e, p);
+      if(success) {
+        window.location.href = 'admin.html';
+      } else {
+        document.getElementById('a-err').style.display = 'block';
+        btn.textContent = 'Authorize';
+      }
+    }
+  </script>
+</body>
+</html>

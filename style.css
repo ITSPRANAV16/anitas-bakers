@@ -1,0 +1,435 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Rubik:wght@300;400;500;600&family=Great+Vibes&display=swap');
+
+/* ============================================================
+   ANITA'S BAKERS — LUXURY DARK & GOLD DESIGN SYSTEM
+   Ultra Premium • Elite • Pure Vegetarian
+   ============================================================ */
+
+:root {
+  /* Luxury Dark Palette */
+  --bg-deep: #0B0908;
+  --bg-surface: #14100E;
+  --bg-glass: rgba(20, 16, 14, 0.7);
+  --bg-glass-light: rgba(255, 255, 255, 0.03);
+  
+  /* Gold Accents */
+  --gold-light: #FBE7A1;
+  --gold-main: #D4AF37;
+  --gold-dark: #A37F1D;
+  --gold-gradient: linear-gradient(135deg, #FBE7A1 0%, #D4AF37 50%, #996515 100%);
+  --gold-glow: 0 0 25px rgba(212, 175, 55, 0.3);
+  
+  /* Text */
+  --text-primary: #FEF7EE;
+  --text-secondary: #BCAAA4;
+  --text-muted: #8D7A71;
+  
+  /* Veg Green (Kept for tradition, but refined) */
+  --veg-green: #4CAF50;
+  --veg-gradient: linear-gradient(135deg, #81C784, #388E3C);
+  
+  /* Danger/Alert */
+  --danger: #E53935;
+  
+  /* Typography */
+  --font-display: 'Playfair Display', serif;
+  --font-body: 'Rubik', sans-serif;
+  --font-script: 'Great Vibes', cursive;
+  
+  /* Spacing */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+  --space-2xl: 48px;
+  --space-3xl: 64px;
+  --space-4xl: 96px;
+  
+  /* Shapes */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --radius-xl: 32px;
+  --radius-full: 999px;
+  
+  /* Animation */
+  --ease-super-smooth: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+  
+  /* Header */
+  --header-height: 85px;
+}
+
+/* ---------- Reset & Base ---------- */
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-size: 16px;
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--bg-deep);
+  background-image: 
+    radial-gradient(circle at 15% 50%, rgba(212, 175, 55, 0.04), transparent 25%),
+    radial-gradient(circle at 85% 30%, rgba(212, 175, 55, 0.04), transparent 25%);
+  background-attachment: fixed;
+  color: var(--text-primary);
+  line-height: 1.6;
+  min-height: 100vh;
+  padding-top: var(--header-height);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+  transition: all 0.3s var(--ease-super-smooth);
+}
+
+button, input, select, textarea {
+  font-family: inherit;
+  border: none;
+  outline: none;
+}
+
+/* ---------- Utility Classes ---------- */
+.text-gold {
+  background: var(--gold-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.text-center { text-align: center; }
+.flex { display: flex; }
+.flex-between { display: flex; align-items: center; justify-content: space-between; }
+.grid { display: grid; gap: var(--space-xl); }
+.mt-sm { margin-top: var(--space-sm); }
+.mt-md { margin-top: var(--space-md); }
+.mt-lg { margin-top: var(--space-lg); }
+.mt-xl { margin-top: var(--space-xl); }
+.mb-sm { margin-bottom: var(--space-sm); }
+.mb-md { margin-bottom: var(--space-md); }
+.mb-lg { margin-bottom: var(--space-lg); }
+
+/* ============================================================
+   SHARED HEADER (Floating Glass)
+   ============================================================ */
+.site-header {
+  position: fixed;
+  top: 15px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: calc(100% - 30px);
+  max-width: 1200px;
+  height: 65px;
+  background: var(--bg-glass);
+  backdrop-filter: blur(20px) saturate(1.5);
+  -webkit-backdrop-filter: blur(20px) saturate(1.5);
+  border: 1px solid rgba(212, 175, 55, 0.15);
+  border-radius: var(--radius-full);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 var(--space-lg);
+  z-index: 1000;
+  box-shadow: 0 15px 35px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.05);
+  transition: all 0.4s var(--ease-super-smooth);
+}
+
+.site-header.scrolled {
+  width: 100%;
+  top: 0;
+  border-radius: 0;
+  height: 70px;
+  border: none;
+  border-bottom: 1px solid rgba(212, 175, 55, 0.1);
+  background: rgba(11, 9, 8, 0.9);
+}
+
+.logo-wrap {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logo-wrap img {
+  height: 42px;
+  width: auto;
+  border-radius: var(--radius-sm);
+  filter: drop-shadow(0 4px 10px rgba(0,0,0,0.4));
+  object-fit: contain;
+}
+
+.brand-name {
+  font-family: var(--font-script);
+  font-size: 2rem;
+  color: var(--gold-main);
+  line-height: 1;
+  text-shadow: 0 2px 10px rgba(212, 175, 55, 0.2);
+}
+
+.veg-badge {
+  background: rgba(76, 175, 80, 0.1);
+  color: #81C784;
+  border: 1px solid rgba(76, 175, 80, 0.3);
+  font-size: 0.6rem;
+  padding: 2px 8px;
+  border-radius: var(--radius-full);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.main-nav {
+  display: flex;
+  gap: 6px;
+}
+
+.nav-item {
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  font-weight: 500;
+  padding: 8px 16px;
+  border-radius: var(--radius-full);
+  transition: all 0.3s;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.nav-item:hover, .nav-item.active {
+  color: var(--gold-light);
+  background: rgba(212, 175, 55, 0.1);
+}
+
+/* Mobile Nav */
+.hamburger {
+  display: none;
+  background: none;
+  border: none;
+  color: var(--gold-main);
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+@media (max-width: 768px) {
+  .hamburger { display: block; }
+  .main-nav {
+    position: fixed;
+    top: 0; right: -100%;
+    width: 280px; height: 100vh;
+    background: #110E0C;
+    flex-direction: column;
+    padding: 100px 30px;
+    transition: right 0.4s var(--ease-super-smooth);
+    border-left: 1px solid rgba(212, 175, 55, 0.1);
+  }
+  .main-nav.open { right: 0; }
+  .nav-item { font-size: 1.1rem; padding: 15px 0; border-radius: 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
+}
+
+/* ============================================================
+   BUTTONS (Luxury Pills)
+   ============================================================ */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 16px 36px;
+  border-radius: var(--radius-full);
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--bg-deep);
+  background: var(--gold-gradient);
+  box-shadow: 0 10px 30px rgba(212, 175, 55, 0.2);
+  cursor: pointer;
+  transition: all 0.4s var(--ease-super-smooth);
+  position: relative;
+  overflow: hidden;
+}
+
+.btn::after {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%;
+  width: 50%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+  transition: left 0.6s ease;
+}
+
+.btn:hover::after { left: 200%; }
+.btn:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 15px 40px rgba(212, 175, 55, 0.35);
+}
+
+.btn-secondary {
+  background: transparent;
+  color: var(--gold-main);
+  border: 1px solid var(--gold-main);
+  box-shadow: none;
+}
+
+.btn-secondary:hover {
+  background: rgba(212, 175, 55, 0.1);
+  box-shadow: 0 0 20px rgba(212, 175, 55, 0.1);
+}
+
+.btn-whatsapp {
+  background: linear-gradient(135deg, #128C7E, #25D366);
+  color: #fff;
+  box-shadow: 0 10px 30px rgba(37, 211, 102, 0.2);
+}
+
+.btn-sm { padding: 10px 24px; font-size: 0.75rem; }
+
+/* ============================================================
+   SECTIONS & HEADINGS
+   ============================================================ */
+.section {
+  padding: var(--space-4xl) var(--space-lg);
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.section-title {
+  font-family: var(--font-display);
+  font-size: 3.5rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: var(--space-sm);
+  text-align: center;
+}
+
+.section-subtitle {
+  text-align: center;
+  color: var(--gold-main);
+  font-weight: 500;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  font-size: 0.9rem;
+  margin-bottom: var(--space-2xl);
+}
+
+/* ============================================================
+   FORMS & INPUTS (Dark Glass)
+   ============================================================ */
+.form-group { margin-bottom: var(--space-lg); }
+
+.form-label {
+  display: block;
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 8px;
+}
+
+.form-input, .form-select, .form-textarea {
+  width: 100%;
+  padding: 16px 20px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-md);
+  color: var(--text-primary);
+  font-size: 1rem;
+  transition: all 0.3s;
+}
+
+.form-input:focus, .form-textarea:focus, .form-select:focus {
+  background: rgba(212, 175, 55, 0.05);
+  border-color: var(--gold-main);
+  box-shadow: 0 0 15px rgba(212, 175, 55, 0.1);
+}
+
+/* ============================================================
+   CARDS (Dark Premium)
+   ============================================================ */
+.card {
+  background: var(--bg-surface);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: var(--radius-xl);
+  padding: 30px;
+  transition: all 0.4s var(--ease-super-smooth);
+}
+
+.card:hover {
+  border-color: rgba(212, 175, 55, 0.3);
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.5), 0 0 20px rgba(212, 175, 55, 0.05);
+}
+
+/* ============================================================
+   PAGE BANNER (Dark Luxury)
+   ============================================================ */
+.page-banner {
+  padding: 180px 20px 80px;
+  text-align: center;
+  background: radial-gradient(circle at 50% 100%, rgba(212, 175, 55, 0.08) 0%, var(--bg-deep) 100%);
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+.page-banner h1 {
+  font-family: var(--font-display);
+  font-size: 4rem;
+  background: var(--gold-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 15px;
+}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+.site-footer {
+  border-top: 1px solid rgba(255,255,255,0.05);
+  padding: var(--space-2xl) 20px;
+  text-align: center;
+  background: #080605;
+}
+
+.site-footer .brand-name { margin-bottom: 10px; }
+.site-footer p { color: var(--text-muted); font-size: 0.85rem; }
+
+/* ============================================================
+   ANIMATIONS & FLOATERS
+   ============================================================ */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(40px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in-up {
+  opacity: 0;
+  animation: fadeInUp 0.8s var(--ease-super-smooth) forwards;
+}
+
+.fab-whatsapp {
+  position: fixed; bottom: 30px; right: 30px;
+  width: 65px; height: 65px;
+  border-radius: 50%;
+  background: #25D366; color: white;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 2rem;
+  box-shadow: 0 10px 30px rgba(37, 211, 102, 0.3);
+  z-index: 900;
+  transition: transform 0.3s;
+}
+.fab-whatsapp:hover { transform: scale(1.1); }

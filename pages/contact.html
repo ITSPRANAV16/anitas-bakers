@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="Contact Anita's Bakers – Call or WhatsApp us for custom cakes and bakery orders.">
+  <title>Contact • Anita's Bakers</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='0.9em' font-size='90'%3E%F0%9F%A5%90%3C/text%3E%3C/svg%3E">
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Rubik:wght@400;600;700&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="../style.css"/>
+  <style>
+    /* Contact Header */
+    .contact-banner {
+      padding: 160px 20px 80px;
+      text-align: center;
+      background: radial-gradient(circle at 50% 100%, rgba(212, 175, 55, 0.1) 0%, var(--bg-deep) 100%);
+      border-bottom: 1px solid rgba(212,175,55,0.1);
+    }
+    
+    .contact-banner h1 {
+      font-family: var(--font-display);
+      font-size: 3.5rem;
+      color: var(--text-primary);
+      margin-bottom: 20px;
+    }
+    .contact-banner p {
+      font-size: 1.1rem;
+      color: var(--text-secondary);
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    /* Contact Action Grid */
+    .action-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 30px;
+      max-width: 1200px;
+      margin: -40px auto 80px;
+      padding: 0 20px;
+      position: relative;
+      z-index: 10;
+    }
+
+    .action-card {
+      background: rgba(20, 16, 14, 0.95);
+      backdrop-filter: blur(15px);
+      border: 1px solid rgba(212,175,55,0.2);
+      border-radius: var(--radius-xl);
+      padding: 40px 30px;
+      text-align: center;
+      transition: all 0.4s var(--ease-super-smooth);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+    }
+
+    .action-card:hover {
+      transform: translateY(-10px);
+      border-color: rgba(212,175,55,0.5);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.7), 0 0 30px rgba(212,175,55,0.05);
+    }
+
+    .ac-icon {
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+      padding: 20px;
+      background: rgba(255,255,255,0.03);
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,0.05);
+    }
+
+    .action-card.whatsapp .ac-icon { color: #25D366; }
+    .action-card.call .ac-icon { color: var(--gold-main); }
+    .action-card.map .ac-icon { color: #42A5F5; }
+
+    .ac-title {
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      color: var(--text-primary);
+      margin-bottom: 10px;
+    }
+
+    .ac-desc {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      margin-bottom: 25px;
+      line-height: 1.5;
+    }
+
+    .ac-btn {
+      width: 100%;
+      padding: 14px;
+      border-radius: var(--radius-full);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-size: 0.85rem;
+      cursor: pointer;
+      border: none;
+      transition: all 0.3s;
+    }
+
+    .ac-btn-whatsapp { background: linear-gradient(135deg, #128C7E, #25D366); color: white; }
+    .ac-btn-whatsapp:hover { box-shadow: 0 5px 20px rgba(37,211,102,0.4); }
+    
+    .ac-btn-call { background: var(--gold-gradient); color: var(--bg-deep); }
+    .ac-btn-call:hover { box-shadow: var(--gold-glow); }
+    
+    .ac-btn-map { background: rgba(66, 165, 245, 0.1); color: #42A5F5; border: 1px solid rgba(66, 165, 245, 0.3); }
+    .ac-btn-map:hover { background: #42A5F5; color: white; box-shadow: 0 5px 20px rgba(66, 165, 245, 0.3); border-color: transparent; }
+
+    /* Map Section */
+    .map-container {
+      max-width: 1200px;
+      margin: 0 auto 100px;
+      padding: 0 20px;
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+    }
+
+    .map-wrapper {
+      position: relative;
+      width: 100%;
+      padding-bottom: 45%; 
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+      border: 1px solid rgba(212,175,55,0.2);
+    }
+
+    .map-wrapper iframe {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      filter: invert(90%) hue-rotate(180deg) sepia(20%) grayscale(0.5); /* Dark mode map trick */
+    }
+
+    /* Hours Section */
+    .hours-section {
+      background: var(--bg-surface);
+      padding: 80px 20px;
+      border-top: 1px solid rgba(255,255,255,0.05);
+    }
+
+    .hours-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 30px;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+    
+    .hour-card {
+      text-align: center;
+      padding: 30px;
+      background: rgba(0,0,0,0.3);
+      border-radius: var(--radius-lg);
+      border: 1px solid rgba(255,255,255,0.03);
+    }
+    
+    .hour-title { color: var(--gold-main); font-weight: 600; margin-bottom: 15px; letter-spacing: 1px; text-transform: uppercase; font-size: 0.9rem;}
+    .hour-val { font-family: var(--font-display); font-size: 1.5rem; color: var(--text-primary); }
+
+    @media (max-width: 768px) {
+      .map-wrapper { padding-bottom: 100%; }
+      .hours-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div id="header-slot"></div>
+
+  <section class="contact-banner">
+    <h1>We're Here for You</h1>
+    <p>Whether you need a custom multi-tier celebration cake or just want to reserve your favorite artisanal bread, we're just a message away.</p>
+  </section>
+
+  <div class="action-cards">
+    <div class="action-card whatsapp animate-fade-in-up">
+      <div class="ac-icon">💬</div>
+      <h3 class="ac-title">WhatsApp Us</h3>
+      <p class="ac-desc">The fastest way to place your orders, share cake designs, and get quick menu updates.</p>
+      <button class="ac-btn ac-btn-whatsapp" onclick="window.open(APP.whatsappLink('Hi! I want to order...'), '_blank')">Message +91 9595997500</button>
+    </div>
+
+    <div class="action-card call animate-fade-in-up animate-delay-2">
+      <div class="ac-icon">📞</div>
+      <h3 class="ac-title">Direct Call</h3>
+      <p class="ac-desc">Have a detailed request for a wedding or corporate event? Speak directly to our master bakers.</p>
+      <a href="tel:+919595997500" class="ac-btn ac-btn-call" style="display:inline-block; text-align:center;">Call +91 9595997500</a>
+    </div>
+
+    <div class="action-card map animate-fade-in-up animate-delay-4">
+      <div class="ac-icon">📍</div>
+      <h3 class="ac-title">Visit Bakery</h3>
+      <p class="ac-desc">Experience the aroma of fresh baking. Pickup your orders directly from our premium cloud kitchen.</p>
+      <button class="ac-btn ac-btn-map" onclick="document.getElementById('map').scrollIntoView({behavior:'smooth'})">View Directions</button>
+    </div>
+  </div>
+
+  <section class="hours-section">
+    <div style="text-align:center; margin-bottom: 50px;">
+      <h2 class="section-title">Operating Schedule</h2>
+      <div style="width: 50px; height: 3px; background: var(--gold-main); margin: 0 auto;"></div>
+    </div>
+    
+    <div class="hours-grid">
+      <div class="hour-card">
+        <div class="hour-title">Regular Days</div>
+        <div class="hour-val">8:00 AM – 9:00 PM</div>
+        <div style="color:var(--text-muted); font-size:0.8rem; margin-top:10px;">Monday to Sunday</div>
+      </div>
+      <div class="hour-card" style="border-color: rgba(212,175,55,0.3); background: rgba(212,175,55,0.02);">
+        <div class="hour-title">Festival Season</div>
+        <div class="hour-val">Extended Hours</div>
+        <div style="color:var(--text-muted); font-size:0.8rem; margin-top:10px;">Pre-booking heavily recommended</div>
+      </div>
+      <div class="hour-card">
+        <div class="hour-title">Assistance</div>
+        <div class="hour-val">24/7 WhatsApp</div>
+        <div style="color:var(--text-muted); font-size:0.8rem; margin-top:10px;">Automated & manual support</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="map-container" id="map">
+    <div style="text-align:center; margin-bottom: 40px; margin-top: 80px;">
+      <h2 class="section-title">Our Location</h2>
+      <p style="color:var(--text-secondary);">दत्त मंदिर जवळ, नरसिंहपुर, Ishwarpur</p>
+    </div>
+    <div class="map-wrapper">
+      <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15259.08375924748!2d74.2530!3d17.0215!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bc1751111111111%3A0x1111111111111111!2sDatt%20Mandir%20Narsingpur!5e0!3m2!1sen!2sin!4v1704120000000!5m2!1sen!2sin" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+    </div>
+  </div>
+
+  <div id="footer-slot"></div>
+
+  <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore-compat.js"></script>
+  <script src="../app.js"></script>
+  <script>
+    onReady(() => {
+      initShared('contact');
+    });
+  </script>
+</body>
+</html>
