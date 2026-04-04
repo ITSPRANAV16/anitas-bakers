@@ -301,7 +301,7 @@ const APP = {
     prods.forEach(p => {
       msg += `${p.name} — ${p.price}\n`;
     });
-    msg += `\n📞 Order: +91 9595997500\n📍 दत्त मंदिर जवळ नरसिंहपुर, Islampur`;
+    msg += `\n📞 Order: +91 9595997500\n📍 दत्त मंदिर जवळ नरसिंहपुर, Ishwarpur`;
     window.open(this.whatsappLink(msg), '_blank');
   },
 
@@ -330,7 +330,7 @@ const APP = {
     bill += `╠══════════════════════════════╣\n`;
     bill += `║ TOTAL: ₹${grandTotal}               ║\n`;
     bill += `╚══════════════════════════════╝\n`;
-    bill += `\n📞 +91 9595997500\n📍 Narsinghpur, Islampur\n🌿 Thank you! Visit again!`;
+    bill += `\n📞 +91 9595997500\n📍 Narsinghpur, Ishwarpur\n🌿 Thank you! Visit again!`;
 
     return { bill, grandTotal };
   },
