@@ -603,7 +603,41 @@ function initShared(activePage) {
   initHeaderScroll();
   initHamburger();
   initScrollAnimations();
+  initSecurity();
   if(activePage !== 'admin') initBot();
+}
+
+// ── Security & DevTools Protection ──
+function initSecurity() {
+  // Disable right-click
+  document.addEventListener('contextmenu', (e) => e.preventDefault());
+
+  // Disable common DevTools shortcuts
+  document.addEventListener('keydown', (e) => {
+    const isControl = e.ctrlKey || e.metaKey;
+    const isShift = e.shiftKey;
+    
+    // F12, Ctrl+Shift+I (Inspector), Ctrl+Shift+J (Console), Ctrl+Shift+C (Element Selector), Ctrl+U (View Source)
+    if (
+      e.keyCode === 123 || 
+      (isControl && isShift && [73, 74, 67].includes(e.keyCode)) || 
+      (isControl && e.keyCode === 85)
+    ) {
+      e.preventDefault();
+      return false;
+    }
+  });
+
+  // Optional: Silent debugger trap (discourages debugging)
+  setInterval(() => {
+    (function() {
+      const start = new Date();
+      debugger;
+      if (new Date() - start > 100) {
+        // DevTools likely open
+      }
+    })();
+  }, 3000);
 }
 
 // ── Anita's AI Assistant (LuxBot) ──
