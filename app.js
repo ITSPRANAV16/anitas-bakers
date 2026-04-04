@@ -506,7 +506,10 @@ function buildFooter() {
       <a href="contact.html">Contact</a>
       <a href="login.html">Login</a>
     </div>
-    <div class="footer-copy">© ${new Date().getFullYear()} Anita's Bakers. All rights reserved. | दत्त मंदिर जवळ, नरसिंहपुर, Ishwarpur</div>
+    <div class="footer-copy">
+      © ${new Date().getFullYear()} Anita's Bakers. All rights reserved. | दत्त मंदिर जवळ, नरसिंहपुर, Ishwarpur<br>
+      <span style="font-size: 0.75rem; color: rgba(255,255,255,0.3); letter-spacing: 1px; display: inline-block; margin-top: 8px;">Designed & Developed by Pranav</span>
+    </div>
   </footer>
   <a href="https://wa.me/${APP.WHATSAPP_NUM}" class="fab-whatsapp" target="_blank" rel="noopener" aria-label="Chat on WhatsApp" title="WhatsApp us!">
     <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="currentColor" viewBox="0 0 16 16">
