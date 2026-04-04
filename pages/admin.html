@@ -529,12 +529,28 @@
       list.innerHTML = ITEMS.map(it => `
         <div class="list-row" style="background:rgba(20,16,14,0.5); padding:15px; border-radius:8px; margin-bottom:10px;">
           <div><div class="lr-main">${it.rawName} <span style="font-size:0.7rem; color:var(--text-muted);">(${it.cat})</span></div></div>
-          <div style="display:flex; gap:15px; align-items:center;">
-            <div class="lr-amt">₹${it.price}</div>
+          <div style="display:flex; gap:10px; align-items:center;">
+            <div class="lr-amt" id="price-${it.id}">₹${it.price}</div>
+            <button class="ord-btn" onclick="editPrice('${it.id}', ${it.price})" style="color:var(--gold-main); border-color:var(--gold-main); font-size:0.8rem; padding:4px 10px;">✏️</button>
             <button class="del-btn" onclick="removeProduct('${it.id}')">✕</button>
           </div>
         </div>
       `).join('');
+    }
+
+    async function editPrice(prodId, currentPrice) {
+      const newPrice = prompt('नवीन किंमत टाका (Enter new price):', currentPrice);
+      if(newPrice === null || newPrice.trim() === '') return;
+      const numPrice = Number(newPrice.replace(/[^0-9]/g, ''));
+      if(numPrice <= 0) return APP.toast('Invalid price!', 'error');
+      
+      await APP.updateProductPrice(prodId, numPrice);
+      APP.toast('Price updated to ₹' + numPrice + '!');
+      
+      await refreshItems();
+      renderProdBtns();
+      renderBillSelects();
+      loadInventory();
     }
 
     function createProduct() {

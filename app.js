@@ -209,6 +209,12 @@ const APP = {
     await db.collection('products').doc(String(id)).delete();
   },
 
+  async updateProductPrice(id, newPrice) {
+    if(!db) return;
+    const priceStr = String(newPrice).includes('₹') ? newPrice : '₹' + newPrice;
+    await db.collection('products').doc(String(id)).update({ price: priceStr });
+  },
+
   // ── Orders ──
   async getOrders() {
     if(!db) return [];
