@@ -330,6 +330,27 @@
     <div class="review-grid" id="reviews-container">
       <!-- Injected via JS -->
     </div>
+
+    <!-- Add Review Form -->
+    <div style="max-width: 600px; margin: 60px auto 0; background: rgba(255,255,255,0.02); padding: 30px; border-radius: var(--radius-lg); border: 1px solid rgba(212,175,55,0.2);">
+      <h3 style="color:var(--gold-main); font-family:var(--font-display); font-size:1.5rem; margin-bottom:20px; text-align:center;">Share Your Experience</h3>
+      <div style="margin-bottom: 15px;">
+        <input type="text" id="rev-name" class="lux-input" placeholder="Your Name" style="width:100%; border: 1px solid rgba(255,255,255,0.1); background:rgba(0,0,0,0.5);">
+      </div>
+      <div style="margin-bottom: 15px;">
+        <select id="rev-rating" class="lux-input" style="width:100%; border: 1px solid rgba(255,255,255,0.1); background:rgba(0,0,0,0.5); color:var(--gold-main);">
+          <option value="5">⭐️⭐️⭐️⭐️⭐️ (Excellent)</option>
+          <option value="4">⭐️⭐️⭐️⭐️ (Very Good)</option>
+          <option value="3">⭐️⭐️⭐️ (Average)</option>
+          <option value="2">⭐️⭐️ (Below Average)</option>
+          <option value="1">⭐️ (Poor)</option>
+        </select>
+      </div>
+      <div style="margin-bottom: 20px;">
+        <textarea id="rev-text" class="lux-input" placeholder="What did you love about our cakes?" rows="3" style="width:100%; border: 1px solid rgba(255,255,255,0.1); background:rgba(0,0,0,0.5);"></textarea>
+      </div>
+      <button class="btn" style="width:100%;" onclick="submitReview()" id="rev-btn">Submit Review</button>
+    </div>
   </section>
 
   <div id="footer-slot"></div>
@@ -384,21 +405,49 @@
       return descs[id] || 'Pure, eggless, premium confection.';
     }
 
-    function renderReviews() {
+    async function renderReviews() {
       const container = document.getElementById('reviews-container');
+      container.innerHTML = '<div style="color:var(--gold-main); grid-column:1/-1; text-align:center;">Loading experiences...</div>';
+      
+      const dbReviews = await APP.getReviews();
       const defaults = [
         { name: 'Priya S.', text: 'The eggless chocolate cake is an absolute masterpiece. Unbelievably rich and entirely guilt-free.', rating: 5 },
         { name: 'Dr. Rajesh M.', text: 'Finally, a bakery that understands luxury without compromising on strict vegetarian principles.', rating: 5 },
         { name: 'Kavita K.', text: 'The Red Velvet is the centerpiece of every family celebration we have. Flawless presentation.', rating: 5 },
       ];
       
-      container.innerHTML = defaults.map((r, i) => `
-        <div class="review-card" style="animation: fadeInUp 0.8s ease forwards ${i * 0.2}s; opacity:0;">
-          <div style="color:var(--gold-main); font-size:1.5rem; margin-bottom:15px;">${'★'.repeat(r.rating)}</div>
+      // Merge db reviews with defaults, take top 6 to display
+      const displayReviews = [...dbReviews, ...defaults].slice(0, 6);
+      
+      container.innerHTML = displayReviews.map((r, i) => `
+        <div class="review-card" style="animation: fadeInUp 0.8s ease forwards ${i * 0.15}s; opacity:0;">
+          <div style="color:var(--gold-main); font-size:1.5rem; margin-bottom:15px;">${'★'.repeat(r.rating)}${'☆'.repeat(5-r.rating)}</div>
           <p class="review-quote">"${r.text}"</p>
           <div class="review-author">— ${r.name}</div>
         </div>
       `).join('');
+    }
+
+    async function submitReview() {
+      const name = document.getElementById('rev-name').value.trim();
+      const rating = document.getElementById('rev-rating').value;
+      const text = document.getElementById('rev-text').value.trim();
+      const btn = document.getElementById('rev-btn');
+
+      if(!name || !text) return APP.toast('Please enter name and your review', 'error');
+
+      btn.disabled = true;
+      btn.textContent = 'Submitting...';
+
+      await APP.addReview(name, text, rating);
+      
+      document.getElementById('rev-name').value = '';
+      document.getElementById('rev-text').value = '';
+      btn.disabled = false;
+      btn.textContent = 'Submit Review';
+      
+      APP.toast('Thank you for your review!');
+      renderReviews(); // Reload list
     }
   </script>
 </body>

@@ -388,18 +388,41 @@
       if(sumEl) sumEl.textContent = `Qty: ${totalQty} | ₹${total}`;
 
       const list = document.getElementById('sales-list');
+      let todayHTML = '';
       
-      if(sales.length === 0) return list.innerHTML = '<div style="text-align:center;color:var(--text-muted);">No sales yet today.</div>';
-
-      list.innerHTML = sales.map(s => `
-        <div class="list-row">
-          <div><div class="lr-main">${s.item}</div><div class="lr-sub">Qty: ${s.qty}</div></div>
-          <div style="display:flex; gap:15px; align-items:center;">
-            <div class="lr-amt">₹${s.amount}</div>
-            <button class="del-btn" onclick="delSale('${s.dbId}')">✕</button>
+      if(sales.length === 0) {
+        todayHTML = '<div style="text-align:center;color:var(--text-muted);">No sales yet today.</div>';
+      } else {
+        todayHTML = sales.map(s => `
+          <div class="list-row">
+            <div><div class="lr-main">${s.item}</div><div class="lr-sub">Qty: ${s.qty}</div></div>
+            <div style="display:flex; gap:15px; align-items:center;">
+              <div class="lr-amt">₹${s.amount}</div>
+              <button class="del-btn" onclick="delSale('${s.dbId}')">✕</button>
+            </div>
           </div>
+        `).join('') + `<div class="total-bar"><span>TODAY'S TOTAL</span><span>₹${total}</span></div>`;
+      }
+
+      // Calculate 30-day aggregate
+      const allSales = await APP.getAllSales();
+      const thirtyDaysAgo = new Date();
+      thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+      
+      const thirtyDayTotal = allSales.reduce((sum, s) => {
+        const sDate = s.createdAt ? new Date(s.createdAt) : new Date(); // Fallback if no creation date
+        if(sDate >= thirtyDaysAgo) return sum + (Number(s.amount)||0);
+        return sum;
+      }, 0);
+
+      const monthlyHTML = `
+        <div style="margin-top: 40px; padding: 20px; background: rgba(212,175,55,0.05); border: 1px solid rgba(212,175,55,0.2); border-radius: 12px; text-align: center;">
+          <div style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 1px;">Past 30 Days Revenue</div>
+          <div style="color: var(--gold-main); font-size: 2.2rem; font-family: var(--font-display);">₹${thirtyDayTotal}</div>
         </div>
-      `).join('') + `<div class="total-bar"><span>TOTAL</span><span>₹${total}</span></div>`;
+      `;
+
+      list.innerHTML = todayHTML + monthlyHTML;
     }
 
     async function delSale(id) { await APP.deleteSale(id); await loadSales(); }

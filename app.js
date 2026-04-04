@@ -234,14 +234,19 @@ const APP = {
   },
 
   // ── Reviews ──
-  getReviews() {
-    return this.load(this.KEYS.reviews, []);
+  async getReviews() {
+    if(!db) return [];
+    try {
+      const snap = await db.collection('reviews').orderBy('createdAt', 'desc').get();
+      return snap.docs.map(d => ({ dbId: d.id, ...d.data() }));
+    } catch(e) { console.error('Error fetching reviews:', e); return []; }
   },
 
-  addReview(name, text, rating) {
-    const all = this.load(this.KEYS.reviews, []);
-    all.push({ id: Date.now(), name, text, rating: Number(rating), date: this.today() });
-    this.save(this.KEYS.reviews, all);
+  async addReview(name, text, rating) {
+    if(!db) return;
+    await db.collection('reviews').add({
+      id: Date.now(), name, text, rating: Number(rating), date: this.today(), createdAt: new Date().toISOString()
+    });
   },
 
   // ── Reminders ──
