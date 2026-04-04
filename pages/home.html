@@ -439,15 +439,19 @@
       btn.disabled = true;
       btn.textContent = 'Submitting...';
 
-      await APP.addReview(name, text, rating);
+      try {
+        await APP.addReview(name, text, rating);
+        document.getElementById('rev-name').value = '';
+        document.getElementById('rev-text').value = '';
+        APP.toast('Thank you for your review!');
+        renderReviews();
+      } catch(e) {
+        console.error('Review submit error:', e);
+        APP.toast('Could not submit. Please try again later.', 'error');
+      }
       
-      document.getElementById('rev-name').value = '';
-      document.getElementById('rev-text').value = '';
       btn.disabled = false;
       btn.textContent = 'Submit Review';
-      
-      APP.toast('Thank you for your review!');
-      renderReviews(); // Reload list
     }
   </script>
 </body>
