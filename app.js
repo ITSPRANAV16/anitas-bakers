@@ -24,58 +24,6 @@ if ('serviceWorker' in navigator) {
   });
 }
 
-// Global Page Loader (For every refresh)
-(function() {
-  const loader = document.createElement("div");
-  loader.id = "global-splash";
-  loader.innerHTML = `
-      <style>
-        #global-splash {
-          position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-          background: #0B0908;
-          z-index: 999999;
-          display: flex; flex-direction: column; align-items: center; justify-content: center;
-          transition: opacity 0.5s ease;
-        }
-        .splash-logo-sm {
-          width: 80px; height: 80px; margin-bottom: 20px;
-          animation: pulseSm 1.5s infinite;
-          border-radius: 50%;
-          box-shadow: 0 0 20px rgba(212,175,55,0.2);
-        }
-        @keyframes pulseSm {
-          0% { transform: scale(0.95); opacity: 0.8; }
-          50% { transform: scale(1.05); opacity: 1; }
-          100% { transform: scale(0.95); opacity: 0.8; }
-        }
-        .splash-loader-circle {
-           width: 40px; height: 40px;
-           border: 3px solid rgba(212,175,55,0.1);
-           border-top: 3px solid #d4af37;
-           border-radius: 50%;
-           animation: spin 1s linear infinite;
-        }
-        @keyframes spin { 100% { transform: rotate(360deg); } }
-      </style>
-      <img src="../logo/Anita's Bakers.png" onerror="this.src='logo/Anita\\'s Bakers.png'" class="splash-logo-sm">
-      <div class="splash-loader-circle"></div>
-  `;
-  // Insert at the beginning of body
-  document.addEventListener("DOMContentLoaded", () => {
-    if(window.location.pathname.endsWith('index.html') || window.location.pathname === '/') return; // Skip main splash
-    document.body.appendChild(loader);
-  });
-
-  window.addEventListener("load", () => {
-     setTimeout(() => {
-         if(loader) {
-            loader.style.opacity = '0';
-            setTimeout(() => loader.remove(), 500);
-         }
-     }, 400); // Wait 0.4s for luxurious feel
-  });
-})();
-
 const APP = {
   // Config
   ADMIN_PASS: 'anita2024',
