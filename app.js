@@ -382,6 +382,60 @@ const APP = {
       setTimeout(() => toast.remove(), 300);
     }, 3000);
   },
+
+  // ── Luxury Confirm Modal ──
+  luxConfirm(message) {
+    return new Promise((resolve) => {
+      const overlay = document.createElement('div');
+      overlay.style.cssText = 'position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.8); backdrop-filter:blur(5px); z-index:99999; display:flex; align-items:center; justify-content:center; animation:fadeIn 0.2s ease;';
+      
+      const box = document.createElement('div');
+      box.style.cssText = 'background:#14100E; padding:30px; border:1px solid rgba(212,175,55,0.4); border-radius:15px; max-width:90%; width:340px; text-align:center; box-shadow:0 20px 40px rgba(0,0,0,0.8);';
+      box.innerHTML = `
+        <div style="font-size:2.5rem; margin-bottom:15px;">⚠️</div>
+        <p style="color:#f5f0e8; font-size:1.1rem; margin-bottom:25px; line-height:1.5;">${message}</p>
+        <div style="display:flex; gap:12px;">
+          <button id="lux-cancel" style="flex:1; padding:12px; border-radius:25px; border:1px solid rgba(255,255,255,0.15); background:rgba(255,255,255,0.05); color:#aaa; font-size:0.95rem; cursor:pointer; font-weight:600;">Cancel</button>
+          <button id="lux-ok" style="flex:1; padding:12px; border-radius:25px; border:none; background:linear-gradient(135deg,#d4af37,#b8962b); color:#0B0908; font-size:0.95rem; cursor:pointer; font-weight:700;">Delete</button>
+        </div>
+      `;
+      overlay.appendChild(box);
+      document.body.appendChild(overlay);
+
+      box.querySelector('#lux-ok').onclick = () => { overlay.remove(); resolve(true); };
+      box.querySelector('#lux-cancel').onclick = () => { overlay.remove(); resolve(false); };
+      overlay.onclick = (e) => { if(e.target === overlay) { overlay.remove(); resolve(false); } };
+    });
+  },
+
+  luxPrompt(message, defaultValue = '') {
+    return new Promise((resolve) => {
+      const overlay = document.createElement('div');
+      overlay.style.cssText = 'position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.8); backdrop-filter:blur(5px); z-index:99999; display:flex; align-items:center; justify-content:center; animation:fadeIn 0.2s ease;';
+      
+      const box = document.createElement('div');
+      box.style.cssText = 'background:#14100E; padding:30px; border:1px solid rgba(212,175,55,0.4); border-radius:15px; max-width:90%; width:340px; text-align:center; box-shadow:0 20px 40px rgba(0,0,0,0.8);';
+      box.innerHTML = `
+        <div style="font-size:2.5rem; margin-bottom:15px;">✏️</div>
+        <p style="color:#f5f0e8; font-size:1.1rem; margin-bottom:15px; line-height:1.5;">${message}</p>
+        <input type="text" id="lux-input" value="${defaultValue}" style="width:100%; padding:12px; border-radius:10px; border:1px solid rgba(212,175,55,0.3); background:#0B0908; color:#fff; margin-bottom:20px; font-size:1rem; text-align:center; outline:none;">
+        <div style="display:flex; gap:12px;">
+          <button id="lux-cancel" style="flex:1; padding:12px; border-radius:25px; border:1px solid rgba(255,255,255,0.15); background:rgba(255,255,255,0.05); color:#aaa; font-size:0.95rem; cursor:pointer; font-weight:600;">Cancel</button>
+          <button id="lux-ok" style="flex:1; padding:12px; border-radius:25px; border:none; background:linear-gradient(135deg,#d4af37,#b8962b); color:#0B0908; font-size:0.95rem; cursor:pointer; font-weight:700;">Save</button>
+        </div>
+      `;
+      overlay.appendChild(box);
+      document.body.appendChild(overlay);
+
+      const input = box.querySelector('#lux-input');
+      input.focus();
+      input.select();
+
+      box.querySelector('#lux-ok').onclick = () => { overlay.remove(); resolve(input.value); };
+      box.querySelector('#lux-cancel').onclick = () => { overlay.remove(); resolve(null); };
+      overlay.onclick = (e) => { if(e.target === overlay) { overlay.remove(); resolve(null); } };
+    });
+  },
 };
 
 /* ============================================================

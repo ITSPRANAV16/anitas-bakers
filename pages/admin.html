@@ -370,7 +370,7 @@
     }
 
     async function delReview(id) {
-      if(!confirm('Delete this review?')) return;
+      if(!(await APP.luxConfirm('Delete this review?'))) return;
       await APP.deleteReview(id);
       APP.toast('Review deleted!');
       await loadAdminReviews();
@@ -576,7 +576,7 @@
     }
 
     async function editPrice(prodId, currentPrice) {
-      const newPrice = prompt('नवीन किंमत टाका (Enter new price):', currentPrice);
+      const newPrice = await APP.luxPrompt('नवीन किंमत टाका (Enter new price):', currentPrice);
       if(newPrice === null || newPrice.trim() === '') return;
       const numPrice = Number(newPrice.replace(/[^0-9]/g, ''));
       if(numPrice <= 0) return APP.toast('Invalid price!', 'error');
@@ -607,8 +607,8 @@
       loadInventory();
     }
 
-    function removeProduct(id) {
-      if(!confirm("Delete this product everywhere?")) return;
+    async function removeProduct(id) {
+      if(!(await APP.luxConfirm("Delete this product everywhere?"))) return;
       APP.deleteProduct(id);
       refreshItems();
       renderProdBtns();
