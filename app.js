@@ -46,11 +46,14 @@ const APP = {
 
   // Default Product catalog
   DEFAULT_PRODUCTS: [
-    { id: 'bread', name: '🍞 Bread', price: '₹20/30', cat: 'bread', img: '../img/bread_lux.png' },
+    { id: 'bread30', name: '🍞 Bread (30)', price: '₹30', cat: 'bread', img: '../img/bread_lux.png' },
+    { id: 'bread40', name: '🍞 Bread (40)', price: '₹40', cat: 'bread', img: '../img/bread_lux.png' },
     { id: 'biscuit', name: '🫓 Biscuit', price: '₹50', cat: 'snacks', img: '../img/biscuit_lux.png' },
     { id: 'khari', name: '🥐 Khari', price: '₹60', cat: 'snacks', img: '../img/khari_lux.png' },
-    { id: 'toast', name: '🍞 Toast', price: '₹20/40', cat: 'bread', img: '../img/toast_lux.png' },
-    { id: 'pav', name: '🍞 Pav Ladi', price: '₹30/40', cat: 'bread', img: '../img/pav_lux.png' },
+    { id: 'toast20', name: '🍞 Toast (20)', price: '₹20', cat: 'bread', img: '../img/toast_lux.png' },
+    { id: 'toast40', name: '🍞 Toast (40)', price: '₹40', cat: 'bread', img: '../img/toast_lux.png' },
+    { id: 'pav30', name: '🍞 Pav Ladi (30)', price: '₹30', cat: 'bread', img: '../img/pav_lux.png' },
+    { id: 'pav40', name: '🍞 Pav Ladi (40)', price: '₹40', cat: 'bread', img: '../img/pav_lux.png' },
     { id: 'pastry', name: '🧁 Pastry', price: '₹30', cat: 'cakes', img: '../img/pastry_lux.png' },
     { id: 'mava', name: '🍰 Mava Cake', price: '₹125', cat: 'cakes', img: '../img/mava_lux.png' },
     { id: 'chocolate', name: '🎂 Chocolate Cake', price: '₹250', cat: 'cakes', img: '../img/chocolate_lux.png' },
