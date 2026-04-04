@@ -608,6 +608,142 @@ function initShared(activePage) {
   initHeaderScroll();
   initHamburger();
   initScrollAnimations();
+  if(activePage !== 'admin') initBot();
+}
+
+// ── Anita's AI Assistant (LuxBot) ──
+async function initBot() {
+  const products = await APP.getProducts();
+  
+  // Inject CSS
+  const style = document.createElement('style');
+  style.textContent = `
+    .lux-bot-container { position: fixed; bottom: 100px; right: 20px; z-index: 9999; font-family: var(--font-primary); }
+    .lux-bot-fab { width: 60px; height: 60px; border-radius: 50%; background: linear-gradient(135deg, #d4af37, #b8962b); box-shadow: 0 10px 30px rgba(212,175,55,0.4); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); animation: pulseBot 2s infinite; }
+    .lux-bot-fab:hover { transform: scale(1.1) rotate(5deg); }
+    .lux-bot-window { position: absolute; bottom: 80px; right: 0; width: 320px; height: 450px; background: rgba(14,12,10,0.95); backdrop-filter: blur(15px); border: 1px solid rgba(212,175,55,0.3); border-radius: 20px; display: none; flex-direction: column; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.5); transform-origin: bottom right; animation: animScaleIn 0.3s ease; }
+    .lux-bot-window.active { display: flex; }
+    .lux-bot-header { background: linear-gradient(to right, #1a1614, #2a2420); padding: 20px; border-bottom: 1px solid rgba(212,175,55,0.2); display: flex; align-items: center; gap: 12px; }
+    .lux-bot-header .avatar { width: 35px; height: 35px; border-radius: 50%; background: #d4af37; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; }
+    .lux-bot-header .title { font-size: 1rem; color: #fff; font-weight: 600; }
+    .lux-bot-messages { flex: 1; overflow-y: auto; padding: 15px; display: flex; flex-direction: column; gap: 12px; scrollbar-width: thin; }
+    .message { max-width: 85%; padding: 10px 15px; border-radius: 15px; font-size: 0.9rem; line-height: 1.4; }
+    .msg-bot { background: rgba(255,255,255,0.05); color: #eee; align-self: flex-start; border-bottom-left-radius: 2px; }
+    .msg-user { background: #d4af37; color: #000; align-self: flex-end; border-bottom-right-radius: 2px; font-weight: 500; }
+    .lux-bot-input { padding: 15px; border-top: 1px solid rgba(255,255,255,0.05); display: flex; gap: 10px; background: #000; }
+    .lux-bot-input input { flex: 1; background: transparent; border: none; outline: none; color: #fff; font-size: 0.9rem; }
+    .lux-bot-input button { background: none; border: none; color: #d4af37; cursor: pointer; display: flex; align-items: center; justify-content: center; transform: rotate(45deg); }
+    @keyframes pulseBot { 0% { box-shadow: 0 0 0 0 rgba(212,175,55,0.7); } 70% { box-shadow: 0 0 0 15px rgba(212,175,55,0); } 100% { box-shadow: 0 0 0 0 rgba(212,175,55,0); } }
+    @keyframes animScaleIn { from { opacity: 0; transform: scale(0.5); } to { opacity: 1; transform: scale(1); } }
+    .suggested-btn { background: rgba(212,175,55,0.1); border: 1px solid rgba(212,175,55,0.3); color: #d4af37; padding: 6px 12px; border-radius: 20px; font-size: 0.8rem; cursor: pointer; transition: 0.2s; white-space: nowrap; }
+    .suggested-btn:hover { background: rgba(212,175,55,0.2); }
+  `;
+  document.head.appendChild(style);
+
+  // Inject HTML
+  const container = document.createElement('div');
+  container.className = 'lux-bot-container';
+  container.innerHTML = `
+    <div class="lux-bot-window" id="botWin">
+      <div class="lux-bot-header">
+        <div class="avatar">👩‍🍳</div>
+        <div class="title">Anita's Assistant</div>
+      </div>
+      <div class="lux-bot-messages" id="botMsgs"></div>
+      <div style="padding: 5px 15px 10px; display:flex; gap:8px; overflow-x:auto;" id="botChips">
+        <button class="suggested-btn" onclick="sendMsg('Price List?')">📋 Prices</button>
+        <button class="suggested-btn" onclick="sendMsg('Where is the shop?')">📍 Address</button>
+        <button class="suggested-btn" onclick="sendMsg('How to order?')">🛍️ Order</button>
+      </div>
+      <div class="lux-bot-input">
+        <input type="text" id="botInp" placeholder="Ask me something..." autocomplete="off">
+        <button id="botSend"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg></button>
+      </div>
+    </div>
+    <div class="lux-bot-fab" id="botFab">
+      <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+    </div>
+  `;
+  document.body.appendChild(container);
+
+  const fab = document.getElementById('botFab');
+  const win = document.getElementById('botWin');
+  const inp = document.getElementById('botInp');
+  const msgs = document.getElementById('botMsgs');
+  const sendBtn = document.getElementById('botSend');
+
+  fab.onclick = () => win.classList.toggle('active');
+
+  const addMsg = (text, sender) => {
+    const m = document.createElement('div');
+    m.className = `message msg-${sender}`;
+    m.textContent = text;
+    msgs.appendChild(m);
+    msgs.scrollTop = msgs.scrollHeight;
+  };
+
+  const getBotResponse = (txt) => {
+    const q = txt.toLowerCase();
+    
+    if(q.includes('price') || q.includes('bhav') || q.includes('menu')) {
+      let list = products.slice(0, 5).map(p => `${p.name}: ${p.price}`).join('\n');
+      return "आमची काही खास प्रॉडक्ट्स आणि त्यांचे दर:\n" + list + "\n\nपूर्ण मेनू तुम्ही Menu पेजवर बघू शकता! 😊";
+    }
+    
+    if(q.includes('where') || q.includes('address') || q.includes('location') || q.includes('dukan') || q.includes('shop')) {
+      return "आमचं दुकान नरसिंहपुर (Ishwarpur) मध्ये दत्त मंदिर जवळ आहे. नक्की भेट द्या! 📍";
+    }
+    
+    if(q.includes('order') || q.includes('कशी') || q.includes('cake pahije')) {
+      return "ऑर्डर करण्यासाठी तुम्ही होम पेजवर 'Order via WhatsApp' बटण दाबू शकता किंवा +91 9595997500 वर मेसेज करू शकता! 🛍️";
+    }
+
+    // Check specific product prices
+    for(let p of products) {
+      const pName = p.name.toLowerCase().replace(/[^a-z]/g, '');
+      const cleanQ = q.replace(/[^a-z]/g, '');
+      if(cleanQ.includes(pName)) {
+        return `${p.name} ची किंमत ${p.price} आहे. तुम्हाला आवडेल का ऑर्डर करायला? 🎂`;
+      }
+    }
+
+    if(q.includes('hi') || q.includes('hello') || q.includes('namaste')) {
+      return "नमस्ते! मी अनिता बेकर्सची असिस्टंट आहे. मी तुम्हाला काय मदत करू शकते? Menu, Shop Location किंवा Orders? 😊";
+    }
+
+    return "मला माफ करा, मला समजलं नाही. तुम्ही WhatsApp (+91 9595997500) वर आम्हाला थेट विचारू शकता! 🙏";
+  };
+
+  const handleSend = () => {
+    const text = inp.value.trim();
+    if(!text) return;
+    addMsg(text, 'user');
+    inp.value = '';
+    
+    setTimeout(() => {
+      const resp = getBotResponse(text);
+      addMsg(resp, 'bot');
+    }, 600);
+  };
+
+  window.sendMsg = (t) => {
+    addMsg(t, 'user');
+    setTimeout(() => addMsg(getBotResponse(t), 'bot'), 600);
+  };
+
+  sendBtn.onclick = handleSend;
+  inp.onkeypress = (e) => { if(e.key === 'Enter') handleSend(); };
+
+  // Auto-welcome
+  if(!localStorage.getItem('bot_greeted')) {
+    setTimeout(() => {
+      if(!win.classList.contains('active')) {
+        win.classList.add('active');
+        addMsg("नमस्ते! 🙏\nI'm Anita's Virtual Assistant. मी तुम्हाला केकचे दर, दुकान कुठे आहे किंवा ऑर्डर कशी करायची हे सांगू शकते!", 'bot');
+        localStorage.setItem('bot_greeted', 'true');
+      }
+    }, 4000);
+  }
 }
 
 // DOM ready helper
