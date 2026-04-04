@@ -613,47 +613,53 @@ async function initBot() {
   // Inject CSS
   const style = document.createElement('style');
   style.textContent = `
-    .lux-bot-container { position: fixed; bottom: 100px; right: 20px; z-index: 9999; font-family: var(--font-primary); }
+    .lux-bot-container { position: fixed; bottom: 90px; right: 20px; z-index: 9999; font-family: var(--font-primary); display: flex; flex-direction: column; align-items: flex-end; }
     .lux-bot-fab { width: 60px; height: 60px; border-radius: 50%; background: linear-gradient(135deg, #d4af37, #b8962b); box-shadow: 0 10px 30px rgba(212,175,55,0.4); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); animation: pulseBot 2s infinite; }
     .lux-bot-fab:hover { transform: scale(1.1) rotate(5deg); }
-    .lux-bot-window { position: absolute; bottom: 80px; right: 0; width: 320px; height: 500px; background: rgba(14,12,10,0.98); backdrop-filter: blur(20px); border: 1px solid rgba(212,175,55,0.3); border-radius: 20px; display: none; flex-direction: column; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.8); transform-origin: bottom right; animation: animScaleIn 0.3s ease; }
+    .lux-bot-window { position: absolute; bottom: 80px; right: 0; width: 340px; max-width: calc(100vw - 40px); height: 500px; max-height: calc(100vh - 180px); background: rgba(14,12,10,0.98); backdrop-filter: blur(20px); border: 1px solid rgba(212,175,55,0.3); border-radius: 20px; display: none; flex-direction: column; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.8); transform-origin: bottom right; animation: animScaleIn 0.3s ease; }
     .lux-bot-window.active { display: flex; }
-    .lux-bot-header { background: linear-gradient(to right, #1a1614, #2a2420); padding: 15px 20px; border-bottom: 1px solid rgba(212,175,55,0.2); display: flex; align-items: center; justify-content: space-between; }
+    
+    @media (max-width: 480px) {
+      .lux-bot-container { right: 15px; bottom: 80px; }
+      .lux-bot-window { width: calc(100vw - 30px); height: calc(100vh - 160px); bottom: 75px; }
+    }
+
+    .lux-bot-header { background: linear-gradient(to right, #1a1614, #2a2420); padding: 15px 20px; border-bottom: 1px solid rgba(212,175,55,0.2); display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; }
     .lux-bot-header .info { display: flex; align-items: center; gap: 12px; }
     .lux-bot-header .avatar { width: 35px; height: 35px; border-radius: 50%; background: #d4af37; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; }
     .lux-bot-header .title { font-size: 0.95rem; color: #fff; font-weight: 600; }
-    .lux-bot-messages { flex: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 15px; scrollbar-width: thin; }
-    .message { max-width: 85%; padding: 12px 16px; border-radius: 18px; font-size: 0.92rem; line-height: 1.5; animation: fadeInUp 0.3s ease; }
+    .lux-bot-messages { flex: 1; overflow-y: auto; padding: 15px; display: flex; flex-direction: column; gap: 12px; scrollbar-width: thin; }
+    .message { max-width: 85%; padding: 10px 14px; border-radius: 18px; font-size: 0.88rem; line-height: 1.5; animation: fadeInUp 0.3s ease; word-wrap: break-word; }
     .msg-bot { background: rgba(255,255,255,0.07); color: #eee; align-self: flex-start; border-bottom-left-radius: 4px; }
     .msg-user { background: linear-gradient(135deg, #d4af37, #b8962b); color: #000; align-self: flex-end; border-bottom-right-radius: 4px; font-weight: 600; box-shadow: 0 4px 15px rgba(212,175,55,0.2); }
     
     /* Product Card */
-    .bot-card { background: #1a1614; border: 1px solid rgba(212,175,55,0.3); border-radius: 12px; overflow: hidden; margin-top: 10px; width: 220px; }
-    .bot-card img { width: 100%; height: 120px; object-fit: cover; }
-    .bot-card-body { padding: 12px; }
-    .bot-card-title { color: #fff; font-weight: 600; font-size: 0.9rem; margin-bottom: 4px; }
-    .bot-card-price { color: var(--gold-main); font-weight: 700; font-size: 1rem; margin-bottom: 10px; }
-    .bot-card-btn { width: 100%; padding: 8px; background: var(--gold-main); color: #000; border: none; border-radius: 6px; font-weight: 700; font-size: 0.8rem; cursor: pointer; }
+    .bot-card { background: #1a1614; border: 1px solid rgba(212,175,55,0.3); border-radius: 12px; overflow: hidden; margin-top: 10px; width: 100%; max-width: 220px; }
+    .bot-card img { width: 100%; height: 110px; object-fit: cover; }
+    .bot-card-body { padding: 10px; }
+    .bot-card-title { color: #fff; font-weight: 600; font-size: 0.85rem; margin-bottom: 3px; }
+    .bot-card-price { color: var(--gold-main); font-weight: 700; font-size: 0.95rem; margin-bottom: 8px; }
+    .bot-card-btn { width: 100%; padding: 7px; background: var(--gold-main); color: #000; border: none; border-radius: 6px; font-weight: 700; font-size: 0.75rem; cursor: pointer; }
 
     /* Typing Dots */
-    .typing { display: flex; gap: 4px; padding: 10px 15px; background: rgba(255,255,255,0.05); border-radius: 15px; align-self: flex-start; margin-bottom: 15px; }
-    .dot { width: 6px; height: 6px; background: #d4af37; border-radius: 50%; opacity: 0.4; animation: dotPulse 1.5s infinite; }
+    .typing { display: flex; gap: 4px; padding: 10px 15px; background: rgba(255,255,255,0.05); border-radius: 15px; align-self: flex-start; margin-bottom: 10px; }
+    .dot { width: 5px; height: 5px; background: #d4af37; border-radius: 50%; opacity: 0.4; animation: dotPulse 1.5s infinite; }
     .dot:nth-child(2) { animation-delay: 0.2s; }
     .dot:nth-child(3) { animation-delay: 0.4s; }
     @keyframes dotPulse { 0%, 100% { transform: translateY(0); opacity: 0.4; } 50% { transform: translateY(-4px); opacity: 1; } }
 
-    .lux-bot-input { padding: 15px; border-top: 1px solid rgba(255,255,255,0.05); display: flex; gap: 10px; background: #0b0908; align-items: center; }
-    .lux-bot-input input { flex: 1; background: transparent; border: none; outline: none; color: #fff; font-size: 0.95rem; }
-    .bot-ico-btn { background: none; border: none; color: #d4af37; cursor: pointer; display: flex; align-items: center; justify-content: center; opacity: 0.7; transition: 0.3s; }
+    .lux-bot-input { padding: 12px 15px; border-top: 1px solid rgba(255,255,255,0.05); display: flex; gap: 10px; background: #0b0908; align-items: center; flex-shrink: 0; }
+    .lux-bot-input input { flex: 1; background: transparent; border: none; outline: none; color: #fff; font-size: 0.9rem; }
+    .bot-ico-btn { background: none; border: none; color: #d4af37; cursor: pointer; display: flex; align-items: center; justify-content: center; opacity: 0.7; transition: 0.3s; padding: 5px; }
     .bot-ico-btn:hover { opacity: 1; transform: scale(1.1); }
     .bot-ico-btn.listening { color: #ff6b6b; animation: pulseBot 1s infinite; }
 
     @keyframes pulseBot { 0% { opacity: 0.7; } 50% { opacity: 1; transform: scale(1.2); } 100% { opacity: 0.7; } }
     @keyframes animScaleIn { from { opacity: 0; transform: scale(0.8) translateY(20px); } to { opacity: 1; transform: scale(1) translateY(0); } }
     
-    .bot-chips { padding: 5px 15px 15px; display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; }
+    .bot-chips { padding: 0 15px 12px; display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; flex-shrink: 0; }
     .bot-chips::-webkit-scrollbar { display: none; }
-    .suggested-btn { background: rgba(212,175,55,0.08); border: 1px solid rgba(212,175,55,0.2); color: #d4af37; padding: 8px 14px; border-radius: 20px; font-size: 0.75rem; cursor: pointer; transition: 0.2s; white-space: nowrap; font-weight: 500; }
+    .suggested-btn { background: rgba(212,175,55,0.08); border: 1px solid rgba(212,175,55,0.2); color: #d4af37; padding: 7px 12px; border-radius: 20px; font-size: 0.7rem; cursor: pointer; transition: 0.2s; white-space: nowrap; font-weight: 500; }
     .suggested-btn:hover { background: rgba(212,175,55,0.15); border-color: #d4af37; }
   `;
   document.head.appendChild(style);
