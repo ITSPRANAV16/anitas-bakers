@@ -88,6 +88,19 @@
   </style>
 </head>
 <body>
+  <!-- Instructional Popup -->
+  <div id="info-popup" style="position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.8); backdrop-filter:blur(5px); z-index:9999; display:flex; align-items:center; justify-content:center; animation: fadeIn 0.3s ease;">
+    <div style="background:#14100E; padding:30px; border:1px solid rgba(212,175,55,0.4); border-radius:15px; max-width:90%; width:350px; text-align:center; box-shadow: 0 20px 40px rgba(0,0,0,0.8);">
+      <div style="font-size:3rem; margin-bottom:10px;">👋</div>
+      <h2 style="color:var(--gold-main); font-family:var(--font-display); margin-bottom:15px;">Welcome to Login</h2>
+      <p style="color:var(--text-secondary); margin-bottom:25px; line-height:1.6;">
+        <span style="color:var(--gold-light); font-weight:600;">Customers:</span> Enter your Name and Phone number below to track your order status easily!<br><br>
+        <span style="font-size:0.85rem">(Admin/Owners can select the 'Executive' tab)</span>
+      </p>
+      <button onclick="document.getElementById('info-popup').style.display='none'" class="btn" style="width:100%">Got It, Thanks!</button>
+    </div>
+  </div>
+
   <div id="header-slot"></div>
 
   <div class="login-container">
