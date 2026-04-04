@@ -1,4 +1,4 @@
-const CACHE_NAME = 'anitas-bakers-v3';
+const CACHE_NAME = 'anitas-bakers-v4';
 const ASSETS = [
   '/',
   '/index.html',
