@@ -230,7 +230,7 @@
       <h2 class="panel-title">Add Sale Entry</h2>
       <div class="prod-grid" id="prod-btns"></div>
       <div class="row-flex">
-        <input type="number" class="lux-input" id="sale-qty" placeholder="Qty" value="1" style="flex:1;">
+        <input type="number" class="lux-input" id="sale-qty" placeholder="Qty" value="1" style="flex:1;" oninput="updateSaleAmt()">
         <input type="number" class="lux-input" id="sale-amt" placeholder="₹ Amount" style="flex:2;">
       </div>
       <button class="btn" style="width:100%" onclick="addSale()">Record Sale</button>
@@ -361,7 +361,13 @@
       selectedItem = ITEMS[idx];
       document.querySelectorAll('.prod-sm').forEach(b => b.classList.remove('selected'));
       document.getElementById('pb-'+idx).classList.add('selected');
-      document.getElementById('sale-amt').value = selectedItem.price;
+      updateSaleAmt();
+    }
+
+    function updateSaleAmt() {
+      if(!selectedItem) return;
+      const qty = Number(document.getElementById('sale-qty').value) || 0;
+      document.getElementById('sale-amt').value = selectedItem.price * qty;
     }
 
     async function addSale() {
