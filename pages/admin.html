@@ -220,9 +220,18 @@
       <div class="dash-btn" onclick="toggle('inventory')" id="btn-inventory">
         <span class="icon">📦</span><span class="label">Inventory</span>
       </div>
+      <div class="dash-btn" onclick="toggle('reviews')" id="btn-reviews">
+        <span class="icon">⭐</span><span class="label">Reviews</span>
+      </div>
       <div class="dash-btn" onclick="toggle('share')" id="btn-share">
         <span class="icon">📣</span><span class="label">Marketing</span>
       </div>
+    </div>
+
+    <!-- REVIEWS MANAGEMENT -->
+    <div class="panel" id="panel-reviews">
+      <h2 class="panel-title">Customer Reviews</h2>
+      <div id="admin-reviews-list" style="margin-top:15px;"></div>
     </div>
 
     <!-- SALES -->
@@ -337,7 +346,35 @@
       await loadSales();
       await loadOrders();
       loadInventory();
+      await loadAdminReviews();
     });
+
+    // ADMIN REVIEWS
+    async function loadAdminReviews() {
+      const list = document.getElementById('admin-reviews-list');
+      if(!list) return;
+      list.innerHTML = '<div style="color:var(--text-muted); text-align:center;">Loading...</div>';
+      const reviews = await APP.getReviews();
+      if(!reviews.length) return list.innerHTML = '<div style="color:var(--text-muted);text-align:center;">No reviews yet.</div>';
+      
+      list.innerHTML = reviews.map(r => `
+        <div class="list-row" style="background:rgba(20,16,14,0.5); padding:15px; border-radius:8px; margin-bottom:10px;">
+          <div style="flex:1;">
+            <div class="lr-main">${r.name} <span style="color:var(--gold-main);">${'★'.repeat(r.rating)}${'☆'.repeat(5-r.rating)}</span></div>
+            <div class="lr-sub" style="margin-top:5px;">"${r.text}"</div>
+            <div class="lr-sub" style="margin-top:3px; font-size:0.7rem;">${r.date || ''}</div>
+          </div>
+          <button class="del-btn" onclick="delReview('${r.dbId}')">✕</button>
+        </div>
+      `).join('');
+    }
+
+    async function delReview(id) {
+      if(!confirm('Delete this review?')) return;
+      await APP.deleteReview(id);
+      APP.toast('Review deleted!');
+      await loadAdminReviews();
+    }
 
     function renderProdBtns() {
       document.getElementById('prod-btns').innerHTML = ITEMS.map((it, i) => 

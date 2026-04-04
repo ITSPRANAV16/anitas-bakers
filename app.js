@@ -258,6 +258,11 @@ const APP = {
     });
   },
 
+  async deleteReview(dbId) {
+    if(!db) return;
+    await db.collection('reviews').doc(String(dbId)).delete();
+  },
+
   // ── Reminders ──
   getReminders() {
     return this.load(this.KEYS.reminders, []);
