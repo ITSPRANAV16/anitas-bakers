@@ -7,10 +7,10 @@
   <link rel="stylesheet" href="../style.css"/>
   <style>
     .admin-container {
-      max-width: 600px;
+      max-width: 800px;
       margin: 0 auto;
-      padding: 20px;
-      padding-bottom: 100px;
+      padding: var(--space-md);
+      padding-bottom: 120px;
     }
 
     .admin-welcome {
@@ -25,17 +25,18 @@
 
     .admin-welcome h1 {
       font-family: var(--font-display);
-      font-size: 2rem;
+      font-size: var(--font-section);
       color: var(--gold-main);
       margin-bottom: 8px;
+      line-height: 1.1;
     }
 
     /* Big Buttons */
     .action-grid {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 15px;
-      margin-bottom: 30px;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: var(--space-md);
+      margin-bottom: var(--space-xl);
     }
 
     .dash-btn {
@@ -98,7 +99,7 @@
     /* Sales Prod Buttons */
     .prod-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
       gap: 10px;
       margin-bottom: 20px;
     }
@@ -186,14 +187,12 @@
     .ord-btn { background: rgba(255,255,255,0.05); color: var(--text-primary); padding: 5px 12px; border-radius: 20px; font-size: 0.75rem; cursor: pointer; border: 1px solid rgba(255,255,255,0.1); }
 
     @media (max-width: 600px) {
-      .action-grid { gap: 10px; }
-      .dash-btn { padding: 15px 10px; }
+      .action-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+      .dash-btn { padding: 20px 10px; }
       .dash-btn .icon { font-size: 2rem; }
-      .dash-btn .label { font-size: 0.8rem; }
-      .row-flex { flex-direction: column; align-items: stretch; gap: 15px;}
-      .prod-grid { grid-template-columns: repeat(2, 1fr); }
-      .panel { padding: 20px 15px; }
-      .admin-welcome h1 { font-size: 1.5rem; }
+      .dash-btn .label { font-size: 0.75rem; }
+      .row-flex { flex-direction: column; align-items: stretch; gap: 12px;}
+      .panel { padding: var(--space-lg) var(--space-md); }
     }
   </style>
 </head>

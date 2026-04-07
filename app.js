@@ -448,7 +448,7 @@ function initHeaderScroll() {
   if (!header) return;
   window.addEventListener('scroll', () => {
     header.classList.toggle('scrolled', window.scrollY > 20);
-  });
+  }, { passive: true });
 }
 
 // Hamburger menu
@@ -544,15 +544,15 @@ function buildHeader(activePage) {
 
   return `
   <header class="site-header">
-    <a href="home.html" class="logo-wrap" aria-label="Anita's Bakers home" style="display: flex; align-items: center; gap: 12px; text-decoration: none;">
-      <div style="font-family: var(--font-display); font-size: 2.4rem; line-height: 0.8; background: linear-gradient(135deg, #FFDF73, #B8860B); -webkit-background-clip: text; -webkit-text-fill-color: transparent; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5)); padding-bottom: 5px;">
+    <a href="home.html" class="logo-wrap" aria-label="Anita's Bakers home" style="display: flex; align-items: center; gap: clamp(8px, 2vw, 12px); text-decoration: none;">
+      <div style="font-family: var(--font-display); font-size: clamp(1.8rem, 5vw, 2.4rem); line-height: 0.8; background: linear-gradient(135deg, #FFDF73, #B8860B); -webkit-background-clip: text; -webkit-text-fill-color: transparent; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5)); padding-bottom: 5px;">
         A
       </div>
       <div class="brand-info" style="display: flex; flex-direction: column; justify-content: center;">
-        <div style="font-family: var(--font-primary); font-size: 1.15rem; font-weight: 700; letter-spacing: 2px; color: var(--gold-light); text-transform: uppercase; line-height: 1;">
+        <div style="font-family: var(--font-primary); font-size: clamp(0.9rem, 3.5vw, 1.15rem); font-weight: 700; letter-spacing: clamp(1px, 1.5vw, 2px); color: var(--gold-light); text-transform: uppercase; line-height: 1;">
           Anita's <span style="font-weight: 300; color: #fff;">Bakers</span>
         </div>
-        <div style="font-size: 0.65rem; color: #4ade80; letter-spacing: 1px; text-transform: uppercase; font-weight: 600; margin-top: 3px; display: flex; align-items: center; gap: 4px;">
+        <div style="font-size: clamp(0.55rem, 2vw, 0.65rem); color: #4ade80; letter-spacing: 1px; text-transform: uppercase; font-weight: 600; margin-top: 3px; display: flex; align-items: center; gap: 4px;">
           <span style="font-size:0.5rem">✦</span> Pure Vegetarian
         </div>
       </div>

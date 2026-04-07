@@ -22,14 +22,14 @@
   <style>
     /* Hero Section */
     .hero {
-      height: 100vh;
-      min-height: 800px;
+      height: 90vh;
+      min-height: 600px;
       position: relative;
       display: flex;
       align-items: center;
       justify-content: center;
       text-align: center;
-      padding: 0 20px;
+      padding: 0 var(--space-lg);
       overflow: hidden;
     }
 
@@ -74,7 +74,7 @@
 
     .hero-title {
       font-family: var(--font-display);
-      font-size: 5.5rem;
+      font-size: var(--font-hero);
       font-weight: 400;
       line-height: 1.1;
       margin-bottom: 24px;
@@ -105,9 +105,9 @@
     /* Product Cards overrides for Home */
     .lux-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 30px;
-      max-width: 1300px;
+      grid-template-columns: repeat(auto-fit, minmax(clamp(250px, 40vw, 350px), 1fr));
+      gap: var(--space-xl);
+      max-width: 1400px;
       margin: 0 auto;
     }
 
@@ -150,7 +150,7 @@
 
     .lux-card h3 {
       font-family: var(--font-display);
-      font-size: 1.8rem;
+      font-size: var(--font-card-title);
       color: var(--gold-light);
       margin-bottom: 8px;
     }
@@ -190,8 +190,8 @@
     /* About Mini */
     .lux-about {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 60px;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: var(--space-2xl);
       align-items: center;
       max-width: 1200px;
       margin: 0 auto;
@@ -205,7 +205,7 @@
 
     .lux-about-text h2 {
       font-family: var(--font-display);
-      font-size: 3.5rem;
+      font-size: var(--font-section);
       color: var(--gold-main);
       margin-bottom: 24px;
       line-height: 1.1;
@@ -221,8 +221,8 @@
     /* Reviews */
     .review-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 30px;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: var(--space-xl);
       max-width: 1200px;
       margin: 0 auto;
     }
@@ -251,21 +251,10 @@
       color: var(--gold-dark);
     }
 
-    @media (max-width: 1024px) {
-      .lux-about { grid-template-columns: 1fr; }
-      .review-grid { grid-template-columns: 1fr; }
-      .hero-title { font-size: 4rem; }
-    }
     @media (max-width: 600px) {
-      .lux-about-text h2 { font-size: 2.5rem; }
-      .hero-title { font-size: 3.2rem; }
-    }
-    @media (max-width: 480px) {
-      .hero-title { font-size: 2.5rem; margin-top:20px;}
-      .hero-subtitle { font-size: 1rem; }
-      .hero-btn-group { flex-direction: column; gap: 15px; }
-      .section { padding: 60px 15px; }
-      .section-title { font-size: 2.5rem; }
+      .hero { height: auto; min-height: 100vh; padding: 120px var(--space-lg) 60px; }
+      .hero-btn-group { flex-direction: column; width: 100%; max-width: 300px; margin: 0 auto; }
+      .hero-btn-group .btn { width: 100%; }
     }
   </style>
 </head>

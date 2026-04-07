@@ -7,9 +7,9 @@
   <link rel="stylesheet" href="../style.css"/>
   <style>
     .login-container {
-      max-width: 450px;
-      margin: 80px auto;
-      padding: 40px;
+      max-width: 500px;
+      margin: clamp(40px, 10vh, 100px) auto;
+      padding: var(--space-xl) var(--space-lg);
       background: var(--bg-surface);
       border: 1px solid rgba(212,175,55,0.15);
       border-radius: var(--radius-xl);
@@ -30,7 +30,7 @@
 
     .login-logo {
       font-family: var(--font-script);
-      font-size: 3rem;
+      font-size: var(--font-section);
       color: var(--gold-main);
       margin-bottom: 5px;
       text-shadow: 0 5px 15px rgba(212,175,55,0.2);
