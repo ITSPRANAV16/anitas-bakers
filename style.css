@@ -50,6 +50,9 @@
   /* Header */
   --header-height: clamp(65px, 10vh, 85px);
   --header-glass-width: calc(100% - clamp(20px, 5vw, 60px));
+
+  /* Transitions & Animations */
+  --ease-super-smooth: cubic-bezier(0.19, 1, 0.22, 1);
 }
 
 /* ---------- Reset & Base ---------- */

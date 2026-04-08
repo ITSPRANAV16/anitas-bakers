@@ -8,95 +8,100 @@
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='0.9em' font-size='90'%3E%F0%9F%A5%90%3C/text%3E%3C/svg%3E">
   <link rel="stylesheet" href="../style.css"/>
   <style>
-    /* About Banner */
+    /* About Banner Refinement */
     .about-banner {
-      height: clamp(300px, 60vh, 500px);
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      padding: 180px 20px 100px;
       text-align: center;
+      background: radial-gradient(circle at 50% 100%, rgba(212, 175, 55, 0.08) 0%, var(--bg-deep) 100%);
+      border-bottom: 1px solid rgba(255,255,255,0.05);
       position: relative;
-      overflow: hidden;
-      padding: 120px var(--space-lg) 60px;
     }
-    .about-banner::before {
-      content: '';
-      position: absolute; inset: 0;
-      background: linear-gradient(135deg, rgba(8, 6, 5, 0.9), rgba(20, 16, 14, 0.6)), url('https://images.unsplash.com/photo-1556217478-f0709b119df7?q=80&w=1500&auto=format&fit=crop') center/cover;
-      z-index: 0;
-    }
-    .about-banner-content { position: relative; z-index: 1; padding: 0 20px; }
     .about-banner h1 {
       font-family: var(--font-display);
       font-size: var(--font-hero);
-      color: var(--gold-light);
-      text-shadow: 0 10px 30px rgba(0,0,0,0.8);
+      background: var(--gold-gradient);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
       margin-bottom: 20px;
       line-height: 1.1;
     }
-    .about-banner p { font-size: var(--font-body-text); color: var(--text-primary); max-width: 600px; margin: 0 auto; line-height: 1.6; }
+    .about-banner p { font-size: var(--font-body-text); color: var(--text-secondary); max-width: 700px; margin: 0 auto; }
 
     /* Values Grid */
-    .values-section { padding: 100px 20px; background: var(--bg-surface); }
+    .values-section { padding: 120px 20px; background: var(--bg-surface); position: relative; }
     .v-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(clamp(250px, 30vw, 350px), 1fr));
-      gap: var(--space-xl);
-      max-width: 1200px;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: var(--space-2xl);
+      max-width: 1400px;
       margin: 0 auto;
     }
     .v-card {
       background: rgba(255,255,255,0.02);
       border: 1px solid rgba(212,175,55,0.1);
-      padding: 40px 30px;
+      padding: 50px 40px;
       text-align: center;
       border-radius: var(--radius-xl);
-      transition: transform 0.4s;
+      transition: all 0.5s var(--ease-super-smooth);
     }
-    .v-card:hover { transform: translateY(-10px); border-color: rgba(212,175,55,0.3); }
-    .v-icon { font-size: 3rem; margin-bottom: 20px; filter: drop-shadow(0 5px 10px rgba(0,0,0,0.5)); }
-    .v-card h3 { font-family: var(--font-display); font-size: 1.5rem; color: var(--gold-main); margin-bottom: 15px; }
-    .v-card p { color: var(--text-muted); font-size: 0.95rem; line-height: 1.6; }
+    .v-card:hover { 
+      transform: translateY(-12px); 
+      border-color: var(--gold-main); 
+      background: rgba(212,175,55,0.05);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+    }
+    .v-icon { font-size: 3.5rem; margin-bottom: 25px; filter: drop-shadow(0 10px 20px rgba(0,0,0,0.5)); }
+    .v-card h3 { font-family: var(--font-display); font-size: 1.8rem; color: var(--gold-light); margin-bottom: 18px; }
+    .v-card p { color: var(--text-muted); font-size: 1rem; line-height: 1.8; }
 
-    /* Timeline */
-    .timeline-section { padding: 80px 20px 120px; }
+    /* Journey Section */
+    .journey-section { padding: 120px 20px; position: relative; }
     .timeline {
-      max-width: 800px;
+      max-width: 900px;
       margin: 0 auto;
       position: relative;
-      padding-left: 30px;
+      padding-left: 40px;
     }
     .timeline::before {
       content: '';
       position: absolute;
       top: 0; bottom: 0; left: 0;
-      width: 2px;
-      background: linear-gradient(180deg, transparent, var(--gold-main), var(--gold-main), transparent);
+      width: 1px;
+      background: linear-gradient(180deg, transparent, var(--gold-main), transparent);
     }
-    .t-item { position: relative; margin-bottom: 50px; }
+    .t-item { position: relative; margin-bottom: 80px; }
     .t-item::before {
       content: '';
       position: absolute;
-      left: -36px; top: 5px;
-      width: 14px; height: 14px;
+      left: -44.5px; top: 12px;
+      width: 10px; height: 10px;
       border-radius: 50%;
-      background: var(--gold-light);
-      box-shadow: 0 0 10px var(--gold-main);
+      background: var(--gold-main);
+      box-shadow: 0 0 20px var(--gold-main);
     }
     .t-year {
-      font-size: 1.1rem;
+      font-size: 1.2rem;
       font-weight: 700;
       color: var(--gold-main);
-      margin-bottom: 8px;
-      letter-spacing: 2px;
+      margin-bottom: 10px;
+      letter-spacing: 3px;
     }
     .t-title {
       font-family: var(--font-display);
-      font-size: 1.8rem;
+      font-size: 2.2rem;
       color: var(--text-primary);
-      margin-bottom: 12px;
+      margin-bottom: 15px;
     }
-    .t-desc { color: var(--text-secondary); line-height: 1.6; }
+    .t-desc { color: var(--text-secondary); line-height: 1.8; font-size: 1.05rem; }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-size: var(--font-section);
+      color: var(--gold-light);
+      margin-bottom: 20px;
+      text-align: center;
+    }
 
   </style>
 </head>
@@ -104,49 +109,49 @@
   <div id="header-slot"></div>
 
   <section class="about-banner">
-    <div class="about-banner-content animate-fade-in-up">
-      <h1>Our Legacy</h1>
-      <p>Crafting pure vegetarian perfection since our humble beginnings.</p>
+    <div class="animate-fade-in-up">
+      <h1>The Golden Story</h1>
+      <p>A journey from a small kitchen to Ishwarpur's most beloved premium eggless bakery.</p>
     </div>
   </section>
 
   <section class="values-section">
-    <div style="text-align:center; margin-bottom: 60px;">
-      <h2 class="section-title">The Foundation of Flavour</h2>
+    <div class="animate-fade-in-up" style="margin-bottom: 80px;">
+      <h2 class="section-title">The Foundation</h2>
     </div>
     <div class="v-grid">
       <div class="v-card animate-fade-in-up">
         <div class="v-icon">🌿</div>
-        <h3>100% Pure Veg</h3>
-        <p>Absolute purity guaranteed. Zero animal products, zero compromises. Perfect for all traditional and religious dietary needs.</p>
+        <h3>Pure Vegetarian</h3>
+        <p>Absolute purity is our core. Every single product is 100% eggless and crafted with strict adherence to vegetarian standards.</p>
       </div>
-      <div class="v-card animate-fade-in-up animate-delay-2">
-        <div class="v-icon">🏆</div>
-        <h3>Premium Quality</h3>
-        <p>Sourcing only the finest ingredients globally — from rich Belgian chocolate to authentic Madagascar vanilla.</p>
+      <div class="v-card animate-fade-in-up" style="animation-delay: 0.2s;">
+        <div class="v-icon">🌟</div>
+        <h3>Finest Ingredients</h3>
+        <p>We source only premium grade ingredients — from high-fat Dutch cocoa to organic local produce, ensuring every bite is elite.</p>
       </div>
-      <div class="v-card animate-fade-in-up animate-delay-4">
-        <div class="v-icon">👨‍🍳</div>
-        <h3>Master Craftsmanship</h3>
-        <p>Every cake is a work of art, meticulously designed and baked by our elite team of culinary artisans.</p>
+      <div class="v-card animate-fade-in-up" style="animation-delay: 0.4s;">
+        <div class="v-icon">🎨</div>
+        <h3>Artisan Craft</h3>
+        <p>Our bakers don't just bake; they design experiences. Meticulous attention to detail goes into every swirl and decoration.</p>
       </div>
     </div>
   </section>
 
-  <section class="timeline-section">
-    <div style="text-align:center; margin-bottom: 60px;">
-      <h2 class="section-title">Our Journey</h2>
+  <section class="journey-section">
+    <div class="animate-fade-in-up" style="margin-bottom: 80px;">
+      <h2 class="section-title">Our Milestone</h2>
     </div>
     <div class="timeline">
       <div class="t-item animate-fade-in-up">
         <div class="t-year">2024</div>
-        <div class="t-title">The Grand Opening</div>
-        <div class="t-desc">Anita's Bakers opened its doors in Narsingpur with a mission to revolutionize eggless baking, establishing a new standard for luxury vegetarian cakes.</div>
+        <div class="t-title">Inception</div>
+        <div class="t-desc">Anita's Bakers was born in Ishwarpur with a vision to prove that eggless baking can be even more luxurious and delicious than traditional methods.</div>
       </div>
-      <div class="t-item animate-fade-in-up animate-delay-2">
-        <div class="t-year">PRESENT</div>
-        <div class="t-title">A Community Favorite</div>
-        <div class="t-desc">Renowned across the region for our exquisite Mava Cake and artisanal Khari, serving hundreds of happy families and grand celebrations.</div>
+      <div class="t-item animate-fade-in-up" style="animation-delay: 0.2s;">
+        <div class="t-year">TODAY</div>
+        <div class="t-title">The Legacy Continues</div>
+        <div class="t-desc">Now a regional favorite for grand celebrations and daily treats, known for our signature Mava cakes and premium custom creations.</div>
       </div>
     </div>
   </section>
